@@ -232,11 +232,11 @@
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #fff;
-      padding: .8rem;
+      padding: .85rem;
       display: grid;
       grid-template-columns: auto 1fr;
       gap: .75rem;
-      align-items: center;
+      align-items: start;
     }
 
     .member-index {
@@ -249,6 +249,17 @@
       color: var(--accent);
       font-weight: 800;
       font-size: .86rem;
+      margin-top: .2rem;
+    }
+
+    .member-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .6rem;
+    }
+
+    .member-fields .field.full {
+      grid-column: 1 / -1;
     }
 
     .summary {
@@ -382,7 +393,8 @@
     }
 
     @media (max-width: 760px) {
-      .field-grid { grid-template-columns: 1fr; }
+      .field-grid,
+      .member-fields { grid-template-columns: 1fr; }
       .container { width: min(920px, calc(100vw - 1.2rem)); }
       .actions { flex-direction: column-reverse; align-items: stretch; }
       .btn { width: 100%; }
@@ -408,7 +420,7 @@
     <section class="wizard" id="wizard">
       <canvas id="particles"></canvas>
       <div class="progress-wrap">
-        <div class="step-label" id="stepLabel">Krok 1 ze 3 · Základ týmu</div>
+        <div class="step-label" id="stepLabel">Krok 1 ze 3 · Tým</div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       </div>
 
@@ -424,25 +436,14 @@
               <label for="teamSize">Počet lidí v týmu</label>
               <select id="teamSize" name="teamSize" required>
                 <option value="" selected disabled>Vyber počet</option>
-                <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
               </select>
             </div>
-            <div class="field">
-              <label for="teamFocus">Zaměření projektu (volitelné)</label>
-              <select id="teamFocus" name="teamFocus">
-                <option value="">Bez preference</option>
-                <option value="automation">Smart Automation</option>
-                <option value="robotics">Praktická robotika</option>
-                <option value="utility">3D Printed Utility</option>
-                <option value="wildcard">Wildcard</option>
-              </select>
-            </div>
           </div>
-          <div class="hint">Tip: později můžeš data týmu ještě upravit.</div>
+          <div class="hint">Hackathon je týmová akce. V týmu musí být minimálně 2 a maximálně 5 lidí.</div>
         </div>
 
         <div class="step" data-step="2">
@@ -458,11 +459,30 @@
               <label for="captainEmail">E-mail kapitána</label>
               <input id="captainEmail" name="captainEmail" type="email" placeholder="kapitan@email.cz" required />
             </div>
+            <div class="field full">
+              <label for="captainPhone">Telefon kapitána</label>
+              <input id="captainPhone" name="captainPhone" type="tel" placeholder="+420 777 123 456" required />
+            </div>
           </div>
         </div>
 
         <div class="step" data-step="3">
-          <h2>Shrnutí a potvrzení</h2>
+          <h2>Technické nároky + shrnutí</h2>
+          <div class="field-grid" style="margin-bottom:.8rem;">
+            <div class="field full">
+              <label>Technické nároky</label>
+              <div style="display:grid;gap:.5rem;">
+                <label><input type="radio" name="techNeed" value="own_ntb" style="width:auto;margin-right:.45rem;" required> Mám svůj NTB, který si přinesu</label>
+                <label><input type="radio" name="techNeed" value="need_ntb" style="width:auto;margin-right:.45rem;"> Potřebuji zajistit NTB od organizátorů</label>
+                <label><input type="radio" name="techNeed" value="other" style="width:auto;margin-right:.45rem;"> Jiné</label>
+              </div>
+            </div>
+            <div class="field full" id="techOtherWrap" style="display:none;">
+              <label for="techOther">Upřesnění (jiné)</label>
+              <input id="techOther" name="techOther" type="text" placeholder="Napiš prosím technické požadavky" />
+            </div>
+          </div>
+
           <div class="summary" id="summaryBox"></div>
           <div class="field" style="margin-top:.8rem;">
             <label><input type="checkbox" id="consent" required style="width:auto;margin-right:.4rem;"> Potvrzuji správnost údajů a souhlasím s podmínkami akce.</label>
@@ -502,13 +522,14 @@
     const loadingState = document.getElementById('loadingState');
     const actionsRow = document.getElementById('actionsRow');
     const teamSize = document.getElementById('teamSize');
+    const techOtherWrap = document.getElementById('techOtherWrap');
 
     let currentStep = 1;
 
     const stepTitles = {
-      1: 'Krok 1 ze 3 · Základ týmu',
-      2: 'Krok 2 ze 3 · Členové a kapitán',
-      3: 'Krok 3 ze 3 · Shrnutí'
+      1: 'Krok 1 ze 3 · Tým',
+      2: 'Krok 2 ze 3 · Členové + kapitán',
+      3: 'Krok 3 ze 3 · Technické nároky + shrnutí'
     };
 
     function setStep(step) {
@@ -530,9 +551,23 @@
         wrap.className = 'member';
         wrap.innerHTML = `
           <div class="member-index">${i}</div>
-          <div class="field" style="margin:0;">
-            <label for="member_${i}">Jméno člena ${i}</label>
-            <input id="member_${i}" name="member_${i}" type="text" placeholder="Jméno a příjmení" required minlength="2" />
+          <div class="member-fields">
+            <div class="field">
+              <label for="member_name_${i}">Jméno</label>
+              <input id="member_name_${i}" name="member_name_${i}" type="text" placeholder="Jméno" required minlength="2" />
+            </div>
+            <div class="field">
+              <label for="member_surname_${i}">Příjmení</label>
+              <input id="member_surname_${i}" name="member_surname_${i}" type="text" placeholder="Příjmení" required minlength="2" />
+            </div>
+            <div class="field">
+              <label for="member_age_${i}">Věk</label>
+              <input id="member_age_${i}" name="member_age_${i}" type="number" min="10" max="99" placeholder="Např. 17" required />
+            </div>
+            <div class="field full">
+              <label for="member_diet_${i}">Omezení na stravu / alergie / diety</label>
+              <input id="member_diet_${i}" name="member_diet_${i}" type="text" placeholder="Např. bezlepková strava, alergie na ořechy" />
+            </div>
           </div>
         `;
         memberList.appendChild(wrap);
@@ -550,12 +585,24 @@
       }
 
       if (step === 2) {
-        const inputs = memberList.querySelectorAll('input');
-        const membersOk = Array.from(inputs).every(i => i.checkValidity());
-        return membersOk && captainIndex.checkValidity() && document.getElementById('captainEmail').checkValidity();
+        const requiredInputs = memberList.querySelectorAll('input[required]');
+        const membersOk = Array.from(requiredInputs).every(i => i.checkValidity());
+        return membersOk
+          && captainIndex.checkValidity()
+          && document.getElementById('captainEmail').checkValidity()
+          && document.getElementById('captainPhone').checkValidity();
       }
 
       if (step === 3) {
+        const techChosen = !!document.querySelector('input[name="techNeed"]:checked');
+        if (!techChosen) return false;
+
+        const chosen = document.querySelector('input[name="techNeed"]:checked').value;
+        if (chosen === 'other') {
+          const other = document.getElementById('techOther');
+          if (!other.value.trim()) return false;
+        }
+
         return document.getElementById('consent').checked;
       }
 
@@ -568,12 +615,24 @@
         teamSize.reportValidity();
       } else if (step === 2) {
         const fields = [
-          ...memberList.querySelectorAll('input'),
+          ...memberList.querySelectorAll('input[required]'),
           captainIndex,
-          document.getElementById('captainEmail')
+          document.getElementById('captainEmail'),
+          document.getElementById('captainPhone')
         ];
         fields.forEach(f => f.reportValidity());
       } else if (step === 3) {
+        const techChosen = document.querySelector('input[name="techNeed"]:checked');
+        if (!techChosen) {
+          alert('Prosím vyber technické nároky.');
+          return;
+        }
+
+        if (techChosen.value === 'other' && !document.getElementById('techOther').value.trim()) {
+          document.getElementById('techOther').reportValidity();
+          return;
+        }
+
         if (!document.getElementById('consent').checked) {
           alert('Prosím potvrď souhlas před odesláním.');
         }
@@ -583,21 +642,32 @@
     function buildSummary() {
       const team = document.getElementById('teamName').value;
       const size = Number(teamSize.value || 0);
-      const focus = document.getElementById('teamFocus').selectedOptions[0]?.textContent || 'Bez preference';
       const captain = Number(captainIndex.value || 1);
       const captainMail = document.getElementById('captainEmail').value;
-      const members = [];
+      const captainPhone = document.getElementById('captainPhone').value;
+      const techNeed = document.querySelector('input[name="techNeed"]:checked')?.value || '';
+      const techOther = document.getElementById('techOther').value.trim();
 
+      const techMap = {
+        own_ntb: 'Mám svůj NTB, který si přinesu',
+        need_ntb: 'Potřebuji zajistit NTB od organizátorů',
+        other: `Jiné${techOther ? `: ${techOther}` : ''}`
+      };
+
+      const members = [];
       for (let i = 1; i <= size; i++) {
-        const val = document.getElementById(`member_${i}`)?.value || '';
-        members.push(val);
+        const name = document.getElementById(`member_name_${i}`)?.value || '';
+        const surname = document.getElementById(`member_surname_${i}`)?.value || '';
+        const age = document.getElementById(`member_age_${i}`)?.value || '';
+        members.push(`${name} ${surname} (${age})`.trim());
       }
 
       summaryBox.innerHTML = `
         <div><strong>Tým:</strong> ${team}</div>
         <div><strong>Počet členů:</strong> ${size}</div>
-        <div><strong>Zaměření:</strong> ${focus}</div>
-        <div><strong>Kapitán:</strong> ${members[captain - 1] || `Člen ${captain}`} (${captainMail})</div>
+        <div><strong>Kapitán:</strong> ${members[captain - 1] || `Člen ${captain}`}</div>
+        <div><strong>Kontakt kapitána:</strong> ${captainMail} · ${captainPhone}</div>
+        <div><strong>Technické nároky:</strong> ${techMap[techNeed] || 'Neuvedeno'}</div>
         <div><strong>Členové:</strong> ${members.join(', ')}</div>
       `;
     }
@@ -607,22 +677,35 @@
     function collectPayload() {
       const teamName = document.getElementById('teamName').value.trim();
       const teamSizeValue = Number(teamSize.value || 0);
-      const teamFocusValue = document.getElementById('teamFocus').value || '';
       const captainIdx = Number(captainIndex.value || 1);
       const captainEmail = document.getElementById('captainEmail').value.trim();
+      const captainPhone = document.getElementById('captainPhone').value.trim();
+      const techNeed = document.querySelector('input[name="techNeed"]:checked')?.value || '';
+      const techOther = document.getElementById('techOther').value.trim();
 
       const members = [];
       for (let i = 1; i <= teamSizeValue; i++) {
-        members.push((document.getElementById(`member_${i}`)?.value || '').trim());
+        members.push({
+          name: (document.getElementById(`member_name_${i}`)?.value || '').trim(),
+          surname: (document.getElementById(`member_surname_${i}`)?.value || '').trim(),
+          age: (document.getElementById(`member_age_${i}`)?.value || '').trim(),
+          diet: (document.getElementById(`member_diet_${i}`)?.value || '').trim(),
+        });
       }
+
+      const captainObj = members[captainIdx - 1] || {};
+      const memberLabels = members.map(m => `${m.name} ${m.surname} (${m.age})`.trim());
 
       return {
         teamName,
         teamSize: teamSizeValue,
-        teamFocus: teamFocusValue,
-        captainName: members[captainIdx - 1] || '',
+        captainName: `${captainObj.name || ''} ${captainObj.surname || ''}`.trim(),
         captainEmail,
-        members,
+        captainPhone,
+        technicalNeed: techNeed,
+        technicalOther: techOther,
+        members: memberLabels,
+        membersDetailed: members,
       };
     }
 
@@ -635,10 +718,13 @@
       const body = new URLSearchParams({
         teamName: payload.teamName,
         teamSize: String(payload.teamSize),
-        teamFocus: payload.teamFocus,
         captainName: payload.captainName,
         captainEmail: payload.captainEmail,
+        captainPhone: payload.captainPhone,
+        technicalNeed: payload.technicalNeed,
+        technicalOther: payload.technicalOther,
         members: JSON.stringify(payload.members),
+        membersDetailed: JSON.stringify(payload.membersDetailed),
       });
 
       await fetch(WEB_APP_URL, {
@@ -653,6 +739,14 @@
     }
 
     teamSize.addEventListener('change', buildMembers);
+
+    document.querySelectorAll('input[name="techNeed"]').forEach(r => {
+      r.addEventListener('change', () => {
+        const isOther = document.querySelector('input[name="techNeed"]:checked')?.value === 'other';
+        techOtherWrap.style.display = isOther ? '' : 'none';
+        if (!isOther) document.getElementById('techOther').value = '';
+      });
+    });
 
     prevBtn.addEventListener('click', () => {
       if (currentStep > 1) setStep(currentStep - 1);
