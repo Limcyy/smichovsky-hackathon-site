@@ -733,6 +733,79 @@
 
     .faq-list { display: grid; gap: .62rem; }
 
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .85rem;
+    }
+
+    .contact-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(165deg, #fff, #fff6ee);
+      padding: 1.05rem;
+      box-shadow: 0 10px 22px rgba(18,10,5,.05);
+      display: grid;
+      gap: .65rem;
+    }
+
+    .contact-head {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+    }
+
+    .contact-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #ffe6d8;
+      border: 1px solid #f3c4aa;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .contact-avatar i {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
+    }
+
+    .contact-name {
+      font-family: "Fraunces", serif;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .contact-role {
+      margin: .2rem 0 0;
+      color: #6a5242;
+      font-size: .88rem;
+    }
+
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+      width: fit-content;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: .45rem .7rem;
+      color: #4b372c;
+      font-size: .86rem;
+    }
+
+    .contact-item i {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+      stroke-width: 2.2;
+    }
+
     details {
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -875,7 +948,8 @@
       .hero-grid { grid-template-columns: 1fr; }
       .hero-visual { transform: none; }
       .prizes,
-      .more-info-grid { grid-template-columns: 1fr 1fr; }
+      .more-info-grid,
+      .contact-grid { grid-template-columns: 1fr 1fr; }
       .why-layout { grid-template-columns: 1fr; }
       .timeline { max-width: 100%; }
     }
@@ -883,7 +957,8 @@
     @media (max-width: 680px) {
       .container { width: min(1140px, calc(100vw - 1.2rem)); }
       .prizes,
-      .more-info-grid { grid-template-columns: 1fr; }
+      .more-info-grid,
+      .contact-grid { grid-template-columns: 1fr; }
       section { padding: 4.4rem 0; }
       .hero { padding-top: 2.4rem; }
       .hero .container { width: min(1140px, calc(100vw - 1.8rem)); }
@@ -1082,16 +1157,29 @@
           <h2>Kontakty</h2>
           <p>Máte dotazy ohledně hackathonu? Kontaktujte náš tým.</p>
         </div>
-        <div class="split">
-          <article class="panel">
-            <h3 style="font-size:1.35rem;">X Y – koordinace účastníků</h3>
-            <p class="lead" style="margin-bottom:.4rem;">E-mail: <strong>doplníme</strong></p>
-            <p class="lead" style="margin:0;">Telefon: <strong>doplníme</strong></p>
+        <div class="contact-grid">
+          <article class="contact-card">
+            <div class="contact-head">
+              <div class="contact-avatar"><i data-lucide="user-round"></i></div>
+              <div>
+                <h3 class="contact-name">X Y</h3>
+                <p class="contact-role">Koordinace účastníků</p>
+              </div>
+            </div>
+            <div class="contact-item"><i data-lucide="mail"></i> E-mail: <strong>doplníme</strong></div>
+            <div class="contact-item"><i data-lucide="phone"></i> Telefon: <strong>doplníme</strong></div>
           </article>
-          <article class="panel">
-            <h3 style="font-size:1.35rem;">Bára Pešek – spolupráce s partnery</h3>
-            <p class="lead" style="margin-bottom:.4rem;">E-mail: <strong>doplníme</strong></p>
-            <p class="lead" style="margin:0;">Telefon: <strong>doplníme</strong></p>
+
+          <article class="contact-card">
+            <div class="contact-head">
+              <div class="contact-avatar"><i data-lucide="handshake"></i></div>
+              <div>
+                <h3 class="contact-name">Bára Pešek</h3>
+                <p class="contact-role">Spolupráce s partnery</p>
+              </div>
+            </div>
+            <div class="contact-item"><i data-lucide="mail"></i> E-mail: <strong>doplníme</strong></div>
+            <div class="contact-item"><i data-lucide="phone"></i> Telefon: <strong>doplníme</strong></div>
           </article>
         </div>
       </div>
