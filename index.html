@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smíchovský Hardware Hackathon — 3D tisk + robotika</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FCF3EA;
+      --text: #120A05;
+      --accent: #DD4300;
+      --accent-soft: #ffe4d7;
+      --paper: #fff9f3;
+      --line: #e8d6c7;
+      --muted: #6f5647;
+      --shadow: 0 16px 34px rgba(18, 10, 5, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Manrope", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .texture {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .13;
+      background-image: radial-gradient(rgba(18,10,5,.25) .45px, transparent .45px);
+      background-size: 3px 3px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(1140px, calc(100vw - 2.4rem));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(252, 243, 234, .85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(18,10,5,.09);
+    }
+
+    .nav-inner {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: "Fraunces", serif;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .brand .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 2px rgba(221,67,0,.12);
+      animation: navPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes navPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 2px rgba(221,67,0,.12);
+      }
+      50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 4px rgba(221,67,0,.08);
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 0;
+      font-weight: 800;
+      transition: transform .2s ease, box-shadow .2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+      gap: .44rem;
+    }
+
+    .btn i {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2.2;
+      flex: 0 0 auto;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--accent);
+      border: 3px solid rgba(18,10,5,.22);
+      box-shadow: 0 5px 11px rgba(221,67,0,.14);
+      padding: .8rem 1.22rem;
+    }
+
+    .nav-inner .btn-primary {
+      border-width: 2px;
+      padding: .66rem 1.02rem;
+      box-shadow: 0 4px 9px rgba(221,67,0,.12);
+    }
+
+    .btn-light {
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: .8rem 1.22rem;
+    }
+
+    section {
+      padding: 5.5rem 0;
+      border-top: 1px solid rgba(18,10,5,.08);
+      position: relative;
+      overflow: clip;
+    }
+
+    section:first-of-type { border-top: 0; }
+
+    .poly {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(145deg, rgba(221,67,0,.22), rgba(221,67,0,.04));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      filter: blur(.2px);
+    }
+
+    .poly.top-right { top: 14%; right: 5%; transform: rotate(18deg); }
+    .poly.bottom-left { top: 58%; left: 6%; transform: rotate(-22deg); }
+    .poly.top-left { top: 18%; left: 5%; transform: rotate(-12deg); }
+    .poly.bottom-right { top: 60%; right: 6%; transform: rotate(26deg); }
+    .poly.mid-right { top: 42%; right: 7%; transform: rotate(8deg); }
+    .poly.soft { opacity: .5; width: 130px; height: 130px; }
+
+    .icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      margin-bottom: .6rem;
+      box-shadow: 0 6px 14px rgba(18,10,5,.05);
+    }
+
+    .icon-badge svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.1;
+    }
+
+    .icon-row {
+      display: inline-flex;
+      align-items: center;
+      gap: .46rem;
+    }
+
+    .icon-row svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+      stroke-width: 2.2;
+    }
+
+    .hero {
+      padding-top: 4rem;
+      border-top: 0;
+    }
+
+    .hero .container {
+      width: min(1140px, calc(100vw - 4.6rem));
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      align-items: start;
+      width: 100%;
+      padding-inline: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fffaf5;
+      padding: .38rem .74rem;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    h1, h2, h3, h4 { margin: 0; line-height: 1; }
+
+    h1 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2.1rem, 4.6vw, 4rem);
+      line-height: .96;
+      letter-spacing: -.4px;
+      max-width: 13ch;
+    }
+
+    .hero p {
+      margin: 1.1rem 0 1.4rem;
+      max-width: 62ch;
+      line-height: 1.64;
+      color: #412d22;
+      font-size: clamp(1rem, 1.7vw, 1.14rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: .7rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+    }
+
+    .meta-row span {
+      padding: .44rem .72rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: .83rem;
+      color: #4f3a2e;
+    }
+
+    .hero-visual {
+      position: relative;
+      overflow: visible;
+      box-shadow: none;
+      border: 0;
+      background: transparent;
+      transform: none;
+      max-width: 760px;
+      margin: .4rem auto 0;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .heading {
+      margin-bottom: 1.2rem;
+    }
+
+    .heading h2 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.9rem, 4vw, 3.1rem);
+      line-height: .97;
+      letter-spacing: -.5px;
+      margin-bottom: .65rem;
+      max-width: 14ch;
+    }
+
+    .heading p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 66ch;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .8rem;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: 0 8px 20px rgba(18,10,5,.04);
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: .48rem;
+      line-height: 1.2;
+    }
+
+    .card p {
+      margin: 0;
+      color: #4f3a2f;
+      line-height: 1.55;
+      font-size: .91rem;
+    }
+
+    .why-layout {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: .9rem;
+      align-items: stretch;
+    }
+
+    .why-main {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+      padding: 1.2rem;
+      box-shadow: 0 12px 26px rgba(18,10,5,.05);
+      display: grid;
+      align-content: start;
+      gap: .8rem;
+    }
+
+    .why-main p {
+      margin: 0;
+      color: #4b372b;
+      line-height: 1.62;
+    }
+
+    .why-side {
+      display: grid;
+      gap: .7rem;
+    }
+
+    .why-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff9f2;
+      padding: .9rem;
+    }
+
+    .why-item h4 {
+      margin: .35rem 0 .35rem;
+      font-size: 1rem;
+    }
+
+    .why-item p {
+      margin: 0;
+      color: #523d30;
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
+    .prizes {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .prize-main {
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #fff6ef);
+      padding: clamp(1rem, 2.2vw, 1.45rem);
+      box-shadow: 0 10px 22px rgba(18,10,5,.05);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prize-main::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      right: -40px;
+      bottom: -55px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(221,67,0,.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .prize-image {
+      border: 1px solid #f0d8ca;
+      border-radius: 18px;
+      background: #fff;
+      padding: .6rem;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 16px rgba(18,10,5,.06);
+      min-height: 220px;
+    }
+
+    .prize-image img {
+      width: 100%;
+      height: auto;
+      max-height: 210px;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .prize-copy h3 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.4rem, 2.8vw, 2.25rem);
+      line-height: 1.05;
+      margin: 0 0 .5rem;
+    }
+
+    .prize-copy p {
+      margin: 0;
+      color: #4f3a2f;
+      line-height: 1.62;
+      font-size: .97rem;
+      max-width: 58ch;
+    }
+
+    .prize-note {
+      border: 1px dashed #e2c7b6;
+      border-radius: 14px;
+      background: #fff;
+      color: #6e5547;
+      padding: .7rem .85rem;
+      font-size: .88rem;
+      line-height: 1.52;
+      width: fit-content;
+      max-width: 100%;
+      margin-top: .7rem;
+    }
+
+    @media (max-width: 900px) {
+      .prize-main {
+        grid-template-columns: 1fr;
+      }
+      .prize-image {
+        max-width: 320px;
+      }
+    }
+
+    .tracks {
+      background: #120A05;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tracks::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 14% 15%, rgba(221,67,0,.2), transparent 40%),
+        radial-gradient(circle at 86% 85%, rgba(255,255,255,.08), transparent 38%);
+    }
+
+    .tracks .container { position: relative; z-index: 1; }
+
+    .tracks .heading p { color: #f0d7c7; }
+
+    .tracks-layout {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: .9rem;
+      align-items: start;
+    }
+
+    .tracks-intro {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08);
+      padding: 1rem;
+    }
+
+    .tracks-intro p {
+      margin: 0;
+      color: #f4dfd1;
+      line-height: 1.62;
+      font-size: .94rem;
+    }
+
+    .track-list {
+      display: grid;
+      gap: .65rem;
+    }
+
+    .track {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      padding: .95rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .track h3 {
+      font-size: 1.03rem;
+      margin-bottom: .45rem;
+    }
+
+    .track p {
+      margin: 0;
+      color: #f4dfd1;
+      line-height: 1.58;
+      font-size: .9rem;
+    }
+
+    .partners-section {
+      background: #120A05;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .partners-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 14% 15%, rgba(221,67,0,.2), transparent 40%),
+        radial-gradient(circle at 86% 85%, rgba(255,255,255,.08), transparent 38%);
+    }
+
+    .partners-section .container { position: relative; z-index: 1; }
+    .partners-section .heading p { color: #f0d7c7; }
+
+    .partners-wrap {
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.06);
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(0,0,0,.2);
+    }
+
+    .partners-track {
+      display: flex;
+      gap: .7rem;
+      width: max-content;
+      padding: .9rem;
+      animation: partner-scroll 24s linear infinite;
+    }
+
+    .partner-pill {
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border-radius: 999px;
+      padding: .58rem .95rem;
+      font-size: .88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+    }
+
+    .partner-pill svg {
+      width: 14px;
+      height: 14px;
+      color: #ffb189;
+      stroke-width: 2.2;
+    }
+
+    @keyframes partner-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-33.33%); }
+    }
+
+    .more-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: .8rem;
+    }
+
+    .info-row {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      padding: 1rem;
+      box-shadow: 0 8px 20px rgba(18,10,5,.04);
+      display: grid;
+      align-content: start;
+      gap: .5rem;
+      min-height: 205px;
+    }
+
+    .info-row h3 {
+      margin: .1rem 0 .1rem;
+      font-size: 1.04rem;
+    }
+
+    .info-row p {
+      margin: 0;
+      color: #4e392d;
+      line-height: 1.58;
+      font-size: .9rem;
+    }
+
+    .info-meta {
+      font-size: .78rem;
+      color: #6a5243;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .3rem .55rem;
+      background: #fff8f0;
+      white-space: nowrap;
+      width: fit-content;
+      margin-top: .3rem;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 820px;
+      margin: .45rem auto 0;
+      display: grid;
+      gap: 1.75rem;
+      padding: .35rem 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 31px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(221,67,0,.12), rgba(221,67,0,.8), rgba(221,67,0,.12));
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 1.1rem 1.15rem .85rem 1.2rem;
+      position: relative;
+      margin-left: 72px;
+      min-height: 154px;
+      box-shadow: 0 10px 22px rgba(18,10,5,.04);
+      transform-origin: left center;
+    }
+
+    .step::before {
+      content: "";
+      position: absolute;
+      left: -49px;
+      top: 26px;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: #fff;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 6px rgba(221,67,0,.12);
+    }
+
+    .step:nth-child(1) { transform: rotate(-0.16deg); }
+    .step:nth-child(2) { transform: rotate(0.14deg); }
+    .step:nth-child(3) { transform: rotate(-0.04deg); }
+
+    .step b {
+      color: var(--accent);
+      font-size: .78rem;
+      letter-spacing: .45px;
+    }
+
+    .step-head {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      margin: .45rem 0 .45rem;
+    }
+
+    .step-head i {
+      width: 18px;
+      height: 18px;
+      color: var(--accent);
+      stroke-width: 2.2;
+      flex: 0 0 auto;
+    }
+
+    .step-head h3 {
+      margin: 0;
+      font-size: 1.04rem;
+      line-height: 1.25;
+    }
+
+    .step p {
+      margin: 0;
+      color: #4f3a2f;
+      font-size: .9rem;
+      line-height: 1.58;
+    }
+
+    .join-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .9rem;
+      align-items: start;
+      max-width: 860px;
+    }
+
+    .faq-list { display: grid; gap: .62rem; }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: .3rem .3rem;
+      transition: border-color .22s ease, box-shadow .22s ease, background-color .22s ease;
+    }
+
+    details[open] {
+      border-color: #e2c7b5;
+      box-shadow: 0 8px 18px rgba(18,10,5,.05);
+      background: #fffdfb;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 700;
+      padding: .72rem .78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .8rem;
+      border-radius: 10px;
+    }
+
+    summary::after {
+      content: "⌄";
+      font-size: 1.05rem;
+      color: var(--accent);
+      line-height: 1;
+      transition: transform .24s ease;
+      flex: 0 0 auto;
+    }
+
+    details[open] summary::after { transform: rotate(180deg); }
+
+    summary::-webkit-details-marker { display: none; }
+
+    details p {
+      margin: 0;
+      padding: 0 .78rem;
+      color: #503b2f;
+      line-height: 1.56;
+      font-size: .91rem;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-4px);
+      transition: max-height .28s ease, opacity .24s ease, transform .24s ease, padding-top .24s ease, padding-bottom .24s ease;
+    }
+
+    details[open] p {
+      max-height: 180px;
+      opacity: 1;
+      transform: translateY(0);
+      padding-top: .22rem;
+      padding-bottom: .65rem;
+    }
+
+    .join-box {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: #fff7ef;
+      padding: 1rem;
+    }
+
+    .join-box h3 {
+      font-family: "Fraunces", serif;
+      font-size: 1.7rem;
+      margin-bottom: .55rem;
+      line-height: 1.05;
+    }
+
+    .join-box p {
+      margin: 0 0 .9rem;
+      color: #5d4537;
+      line-height: 1.58;
+      font-size: .92rem;
+    }
+
+    .join-box .hero-actions { margin-bottom: 0; }
+
+    .final {
+      text-align: center;
+      padding-bottom: 4.8rem;
+    }
+
+    .final-card {
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(221,67,0,.26), transparent 42%),
+        radial-gradient(circle at 86% 80%, rgba(255,255,255,.08), transparent 36%),
+        linear-gradient(145deg, #120A05 0%, #1a0f08 55%, #241309 100%);
+      color: #fff;
+      padding: clamp(1.5rem, 4vw, 2.8rem);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-card::after {
+      content: "";
+      position: absolute;
+      right: 34px;
+      top: 24px;
+      width: 98px;
+      height: 98px;
+      background: linear-gradient(160deg, rgba(221,67,0,.42), rgba(221,67,0,.08));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .final h2 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(2rem, 4.1vw, 3.2rem);
+      line-height: .95;
+      letter-spacing: -.3px;
+      margin-bottom: .9rem;
+    }
+
+    .final p {
+      margin: 0 auto 1.2rem;
+      max-width: 65ch;
+      color: #f3dbcd;
+      line-height: 1.64;
+      font-size: .96rem;
+    }
+
+    footer {
+      text-align: center;
+      color: #6d5546;
+      font-size: .82rem;
+      padding: 0 0 2rem;
+    }
+
+    @media (max-width: 1020px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { transform: none; }
+      .prizes,
+      .more-info-grid { grid-template-columns: 1fr 1fr; }
+      .why-layout { grid-template-columns: 1fr; }
+      .timeline { max-width: 100%; }
+    }
+
+    @media (max-width: 680px) {
+      .container { width: min(1140px, calc(100vw - 1.2rem)); }
+      .prizes,
+      .more-info-grid { grid-template-columns: 1fr; }
+      section { padding: 4.4rem 0; }
+      .hero { padding-top: 2.4rem; }
+      .hero .container { width: min(1140px, calc(100vw - 1.8rem)); }
+      .timeline::before { left: 17px; }
+      .step {
+        margin-left: 42px;
+        transform: none !important;
+      }
+      .step::before {
+        left: -33px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="texture"></div>
+
+  <nav>
+    <div class="container nav-inner">
+      <div class="brand"><span class="dot"></span> Smíchovský Hardware Hackathon</div>
+      <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="poly top-right"></div>
+      <div class="poly top-left soft"></div>
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">24 h · 3D tisk · Praha</span>
+          <h1>Studentský hardwarový hackathon 2026</h1>
+          <p>Zapoj se s týmem kamarádů do HW hackathonu! Během 24 hodin vytvoř projekt na dané téma s pomocí 3D tisku a vyhraj hodnotné ceny. Nejlepší projekty budou odprezentovány na Maker Faire Prague.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
+          </div>
+
+          <div class="meta-row">
+            <span class="icon-row"><i data-lucide="map-pin"></i> NextZone, Preslova 72/25</span>
+            <span class="icon-row"><i data-lucide="calendar-days"></i> 24.–25. dubna, start 8:00</span>
+            <span class="icon-row"><i data-lucide="users"></i> Týmy až 5 lidí</span>
+            <span class="icon-row"><i data-lucide="mic"></i> Demo + porota + ceny</span>
+          </div>
+
+        </div>
+
+        <aside class="hero-visual">
+          <img src="./assets/hero-hackathon.png" alt="Týmy pracující na hardware hackathonu" />
+        </aside>
+      </div>
+    </section>
+
+    
+
+    <section>
+      <div class="poly bottom-right"></div>
+      <div class="container">
+        <div class="heading">
+          <h2>Výhry</h2>
+          <p>Oceněné projekty vybere odborná porota podle kritérií, která budou zveřejněna v den akce.</p>
+        </div>
+        <div class="prizes">
+          <article class="prize-main">
+            <div class="prize-image">
+              <img src="./assets/prusa-printer.jpg" alt="3D tiskárna Prusa MK4S" />
+            </div>
+            <div class="prize-copy">
+              <h3>Hlavní výhra: 3D tiskárna Prusa MK4S</h3>
+              <p>Vítěznému týmu ji osobně předá <strong style="color:#120A05;">Josef Průša</strong> na <strong style="color:#120A05;">Maker Faire Prague</strong>.</p>
+              <div class="prize-note">Další ceny pro druhé a třetí místo budou oznámeny později.</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="partners-section">
+      <div class="poly bottom-left soft"></div>
+      <div class="container">
+        <div class="heading">
+          <h2>Partneři & komunita</h2>
+          <p>Hackathon vzniká ve spolupráci s partnery z maker, vzdělávací a hardware komunity. Reálná podpora, ne jen logo na plakátu.</p>
+        </div>
+        <div class="partners-wrap">
+          <div class="partners-track">
+            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
+            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
+            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
+            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
+            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
+            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
+            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
+            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
+            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
+            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
+            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
+            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
+            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
+            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
+            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
+            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
+            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
+            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section>
+      <div class="container">
+        <div class="heading">
+          <h2>Jak event probíhá</h2>
+          <p>Organizace akce je v rukou studentů.</p>
+        </div>
+        <div class="timeline">
+          <article class="step">
+            <b>ČÁST 1</b>
+            <div class="step-head"><i data-lucide="clipboard-list"></i><h3>Registrace</h3></div>
+            <p>Přihlas svůj tým přes online formulář.</p>
+          </article>
+          <article class="step">
+            <b>ČÁST 2</b>
+            <div class="step-head"><i data-lucide="mail-check"></i><h3>Potvrzení registrace + informační e-maily</h3></div>
+            <p>Po registraci obdržíte potvrzení a všechny potřebné informace k účasti.</p>
+          </article>
+          <article class="step">
+            <b>ČÁST 3</b>
+            <div class="step-head"><i data-lucide="lightbulb"></i><h3>Odhalení tématu a seznámení se</h3></div>
+            <p>Týmy se dozví přesné zadání a seznámí se s pravidly.</p>
+          </article>
+          <article class="step">
+            <b>ČÁST 4</b>
+            <div class="step-head"><i data-lucide="hammer"></i><h3>24 hodin intenzivní práce</h3></div>
+            <p>Během 24 hodin budou týmy vyvíjet svůj projekt s využitím 3D tisku.</p>
+          </article>
+          <article class="step">
+            <b>ČÁST 5</b>
+            <div class="step-head"><i data-lucide="presentation"></i><h3>Prezentace pitch před porotou</h3></div>
+            <p>Každý tým představí svůj projekt před odbornou porotou v krátké prezentaci.</p>
+          </article>
+          <article class="step">
+            <b>ČÁST 6</b>
+            <div class="step-head"><i data-lucide="trophy"></i><h3>Vyhlášení výherců</h3></div>
+            <p>Porota oznámí vítěze a předá některé ceny. Hlavní cenu předá osobně Josef Průša na Maker Faire Prague.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="poly top-left soft"></div>
+      <div class="container">
+        <div class="heading">
+          <h2>Proč se zapojit</h2>
+        </div>
+        <div class="why-layout">
+          <article class="why-main">
+            <span class="icon-badge"><i data-lucide="trending-up"></i></span>
+            <h3 style="font-family:Fraunces,serif;font-size:1.7rem;line-height:1.05;">24 hodin, reálná zkušenost propojená s praxí</h3>
+            <p>Hackathon nabízí studentům jedinečnou příležitost získat praktické zkušenosti s vývojem technického projektu v reálném čase a týmovém prostředí.</p>
+            <p>Během intenzivních 24 hodin si osvojí dovednosti, které běžná výuka jen obtížně nahrazuje.</p>
+          </article>
+          <div class="why-side">
+            <article class="why-item"><span class="icon-row"><i data-lucide="wrench"></i><h4 style="margin:0;">Reálný výstup</h4></span><p>Cílem není teoretický návrh, ale funkční řešení. Studenti odcházejí s konkrétním výsledkem své práce.</p></article>
+            <article class="why-item"><span class="icon-row"><i data-lucide="lightbulb"></i><h4 style="margin:0;">Propojení s výukou</h4></span><p>Studenti aplikují znalosti ze školy v praxi a vidí jejich reálné využití. Získávají tak hlubší porozumění probíraným tématům.</p></article>
+            <article class="why-item"><span class="icon-row"><i data-lucide="network"></i><h4 style="margin:0;">Spolupráce a rozvoj dovedností</h4></span><p>Práce v týmu rozvíjí technické i soft skills, včetně komunikace, organizace a prezentace výsledků.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="poly bottom-right soft"></div>
+      <div class="container join-grid">
+        <div class="heading" style="margin-bottom:1rem;">
+          <h2>FAQ</h2>
+          <p>Tohle lidé řeší nejčastěji před přihláškou.</p>
+        </div>
+        <div class="faq-list">
+          <details><summary>Můžu dorazit i bez týmu?</summary><p>Ne. Hackathon je i týmové spolupráci. Minimálně musí být v týmu 2 lidé, maximálně 5.</p></details>
+          <details><summary>Musím být expert na hardware?</summary><p>Ne. Ideální je mix skillů (HW/SW/design/product). Důležitá je schopnost rychle iterovat.</p></details>
+          <details><summary>Co si mám vzít s sebou?</summary><p>Notebook, nabíječku a chuť stavět. Detailní podmínky dostaneš po registraci.</p></details>
+          <details><summary>Je na místě jídlo a pití?</summary><p>Ano, účastníkům budou poskytnuty oběd, večeře a snídaně druhý den. Detailní informace obdržíte před začátkem akce.</p></details>
+          <details><summary>Můžeme využít vlastní hardware?</summary><p>Jasně. Vlastní komponenty jsou vítané, jen je potřeba dodržet bezpečnostní pravidla prostoru.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="container">
+        <div class="final-card">
+          <h2>Ready na 24h challenge?</h2>
+          <p>Přihlas tým, nebo přijď solo a nech se napárovat. Pokud chceš během víkendu postavit něco, co stojí za prezentaci i po hackathonu, tohle je správné místo.</p>
+          <div class="hero-actions" style="justify-content:center;margin-bottom:0;">
+            <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit se teď</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© Smíchovský Hardware Hackathon · 3D tisk + robotika · Praha</footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrace týmu — Smíchovský Hardware Hackathon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FCF3EA;
+      --text: #120A05;
+      --accent: #DD4300;
+      --line: #e8d6c7;
+      --muted: #6f5647;
+      --paper: #fff9f3;
+      --shadow: 0 16px 34px rgba(18, 10, 5, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Manrope", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100%;
+    }
+
+    .texture {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background-image: radial-gradient(rgba(18,10,5,.22) .45px, transparent .45px);
+      background-size: 3px 3px;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(920px, calc(100vw - 2rem));
+      margin: 0 auto;
+    }
+
+    nav {
+      border-bottom: 1px solid rgba(18,10,5,.08);
+      backdrop-filter: blur(10px);
+      background: rgba(252,243,234,.85);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-inner {
+      min-height: 74px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .8rem;
+    }
+
+    .brand {
+      font-family: "Fraunces", serif;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 2px rgba(221,67,0,.12);
+    }
+
+    .back-link {
+      color: var(--text);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 700;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: .55rem .82rem;
+      border-radius: 999px;
+    }
+
+    main { padding: 2.4rem 0 4rem; }
+
+    .hero {
+      margin-bottom: 1.2rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 1.25rem;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      right: -22px;
+      top: -18px;
+      opacity: .55;
+      background: linear-gradient(145deg, rgba(221,67,0,.25), rgba(221,67,0,.05));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      pointer-events: none;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+      line-height: .98;
+      max-width: 18ch;
+    }
+
+    .hero p {
+      margin: .75rem 0 0;
+      color: #4b372b;
+      line-height: 1.62;
+      max-width: 62ch;
+    }
+
+    .wizard {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 24px;
+      box-shadow: 0 10px 24px rgba(18,10,5,.04);
+      padding: 1.1rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: .65rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #f2e1d5;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 33.333%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d94608, #ff7b3a);
+      transition: width .3s ease;
+    }
+
+    .step-label {
+      font-size: .84rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .step {
+      display: none;
+      animation: fadeIn .25s ease;
+    }
+
+    .step.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step h2 {
+      margin: 0 0 .75rem;
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.35rem, 2.8vw, 2rem);
+      line-height: 1;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: .7rem;
+    }
+
+    .field {
+      display: grid;
+      gap: .35rem;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: .83rem;
+      color: #5f4638;
+      font-weight: 700;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text);
+      font-size: .95rem;
+      padding: .72rem .78rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #df6c35;
+      box-shadow: 0 0 0 4px rgba(221,67,0,.1);
+    }
+
+    .member-list {
+      display: grid;
+      gap: .6rem;
+      margin-top: .3rem;
+    }
+
+    .member {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: .8rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .75rem;
+      align-items: center;
+    }
+
+    .member-index {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(221,67,0,.12);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: .86rem;
+    }
+
+    .summary {
+      border: 1px dashed #e2c8b8;
+      border-radius: 16px;
+      background: #fff;
+      padding: .95rem;
+      display: grid;
+      gap: .5rem;
+      color: #503a2e;
+    }
+
+    .summary strong {
+      color: var(--text);
+      font-size: .96rem;
+    }
+
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      gap: .7rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: .9rem;
+      padding: .7rem 1.08rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--accent);
+      border: 2px solid rgba(18,10,5,.2);
+      box-shadow: 0 6px 12px rgba(221,67,0,.15);
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      border: 1px solid #e4c7b5;
+      border-radius: 18px;
+      background: #fff;
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .success.active { display: block; }
+
+    .success h3 {
+      margin: 0 0 .5rem;
+      font-family: "Fraunces", serif;
+      font-size: 1.7rem;
+    }
+
+    .success p { margin: 0; color: #533d30; line-height: 1.6; }
+
+    .loading {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 1.2rem;
+      text-align: center;
+      gap: .75rem;
+    }
+
+    .loading.active {
+      display: grid;
+      place-items: center;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 3px solid rgba(221,67,0,.22);
+      border-top-color: var(--accent);
+      animation: spin .85s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading b {
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .loading small {
+      color: #6a5143;
+      font-size: .84rem;
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hint {
+      margin-top: .55rem;
+      font-size: .78rem;
+      color: #7a5f50;
+    }
+
+    @media (max-width: 760px) {
+      .field-grid { grid-template-columns: 1fr; }
+      .container { width: min(920px, calc(100vw - 1.2rem)); }
+      .actions { flex-direction: column-reverse; align-items: stretch; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="texture"></div>
+
+  <nav>
+    <div class="container nav-inner">
+      <div class="brand"><span class="dot"></span> Registrace týmu</div>
+      <a class="back-link" href="./index.html">← Zpět na hackathon</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Přihlášení týmu na Smíchovský Hardware Hackathon</h1>
+      <p>Krátký registrační flow na 3 kroky. Vyplň název týmu, členy a potvrď kontaktní údaje kapitána.</p>
+    </section>
+
+    <section class="wizard" id="wizard">
+      <canvas id="particles"></canvas>
+      <div class="progress-wrap">
+        <div class="step-label" id="stepLabel">Krok 1 ze 3 · Základ týmu</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <form id="signupForm" novalidate>
+        <div class="step active" data-step="1">
+          <h2>Základ týmu</h2>
+          <div class="field-grid">
+            <div class="field full">
+              <label for="teamName">Název týmu</label>
+              <input id="teamName" name="teamName" type="text" placeholder="Např. RoboMinds" required minlength="2" />
+            </div>
+            <div class="field">
+              <label for="teamSize">Počet lidí v týmu</label>
+              <select id="teamSize" name="teamSize" required>
+                <option value="" selected disabled>Vyber počet</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="teamFocus">Zaměření projektu (volitelné)</label>
+              <select id="teamFocus" name="teamFocus">
+                <option value="">Bez preference</option>
+                <option value="automation">Smart Automation</option>
+                <option value="robotics">Praktická robotika</option>
+                <option value="utility">3D Printed Utility</option>
+                <option value="wildcard">Wildcard</option>
+              </select>
+            </div>
+          </div>
+          <div class="hint">Tip: později můžeš data týmu ještě upravit.</div>
+        </div>
+
+        <div class="step" data-step="2">
+          <h2>Členové týmu + kapitán</h2>
+          <div class="member-list" id="memberList"></div>
+
+          <div class="field-grid" style="margin-top:.75rem;">
+            <div class="field">
+              <label for="captainIndex">Kapitán týmu</label>
+              <select id="captainIndex" name="captainIndex" required></select>
+            </div>
+            <div class="field">
+              <label for="captainEmail">E-mail kapitána</label>
+              <input id="captainEmail" name="captainEmail" type="email" placeholder="kapitan@email.cz" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="step" data-step="3">
+          <h2>Shrnutí a potvrzení</h2>
+          <div class="summary" id="summaryBox"></div>
+          <div class="field" style="margin-top:.8rem;">
+            <label><input type="checkbox" id="consent" required style="width:auto;margin-right:.4rem;"> Potvrzuji správnost údajů a souhlasím s podmínkami akce.</label>
+          </div>
+        </div>
+
+        <div class="actions" id="actionsRow">
+          <button type="button" class="btn btn-light" id="prevBtn" disabled>← Zpět</button>
+          <button type="button" class="btn btn-primary" id="nextBtn">Pokračovat →</button>
+        </div>
+      </form>
+
+      <div class="loading" id="loadingState">
+        <div class="spinner" aria-hidden="true"></div>
+        <b>Odesílám registraci…</b>
+        <small>Jen chvilku, připravuji potvrzení týmu.</small>
+      </div>
+
+      <div class="success" id="successState">
+        <h3>Registrace odeslána 🎉</h3>
+        <p>Díky! Tým je přihlášen. Potvrzení dorazí na e-mail kapitána během chvíle.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const stepLabel = document.getElementById('stepLabel');
+    const progressFill = document.getElementById('progressFill');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const memberList = document.getElementById('memberList');
+    const captainIndex = document.getElementById('captainIndex');
+    const summaryBox = document.getElementById('summaryBox');
+    const successState = document.getElementById('successState');
+    const loadingState = document.getElementById('loadingState');
+    const actionsRow = document.getElementById('actionsRow');
+    const teamSize = document.getElementById('teamSize');
+
+    let currentStep = 1;
+
+    const stepTitles = {
+      1: 'Krok 1 ze 3 · Základ týmu',
+      2: 'Krok 2 ze 3 · Členové a kapitán',
+      3: 'Krok 3 ze 3 · Shrnutí'
+    };
+
+    function setStep(step) {
+      currentStep = step;
+      steps.forEach(el => el.classList.toggle('active', Number(el.dataset.step) === step));
+      stepLabel.textContent = stepTitles[step];
+      progressFill.style.width = `${(step / 3) * 100}%`;
+      prevBtn.disabled = step === 1;
+      nextBtn.textContent = step === 3 ? 'Odeslat registraci ✓' : 'Pokračovat →';
+    }
+
+    function buildMembers() {
+      const count = Number(teamSize.value || 0);
+      memberList.innerHTML = '';
+      captainIndex.innerHTML = '';
+
+      for (let i = 1; i <= count; i++) {
+        const wrap = document.createElement('div');
+        wrap.className = 'member';
+        wrap.innerHTML = `
+          <div class="member-index">${i}</div>
+          <div class="field" style="margin:0;">
+            <label for="member_${i}">Jméno člena ${i}</label>
+            <input id="member_${i}" name="member_${i}" type="text" placeholder="Jméno a příjmení" required minlength="2" />
+          </div>
+        `;
+        memberList.appendChild(wrap);
+
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Člen ${i}`;
+        captainIndex.appendChild(option);
+      }
+    }
+
+    function validateStep(step) {
+      if (step === 1) {
+        return document.getElementById('teamName').checkValidity() && teamSize.checkValidity();
+      }
+
+      if (step === 2) {
+        const inputs = memberList.querySelectorAll('input');
+        const membersOk = Array.from(inputs).every(i => i.checkValidity());
+        return membersOk && captainIndex.checkValidity() && document.getElementById('captainEmail').checkValidity();
+      }
+
+      if (step === 3) {
+        return document.getElementById('consent').checked;
+      }
+
+      return true;
+    }
+
+    function showValidation(step) {
+      if (step === 1) {
+        document.getElementById('teamName').reportValidity();
+        teamSize.reportValidity();
+      } else if (step === 2) {
+        const fields = [
+          ...memberList.querySelectorAll('input'),
+          captainIndex,
+          document.getElementById('captainEmail')
+        ];
+        fields.forEach(f => f.reportValidity());
+      } else if (step === 3) {
+        if (!document.getElementById('consent').checked) {
+          alert('Prosím potvrď souhlas před odesláním.');
+        }
+      }
+    }
+
+    function buildSummary() {
+      const team = document.getElementById('teamName').value;
+      const size = Number(teamSize.value || 0);
+      const focus = document.getElementById('teamFocus').selectedOptions[0]?.textContent || 'Bez preference';
+      const captain = Number(captainIndex.value || 1);
+      const captainMail = document.getElementById('captainEmail').value;
+      const members = [];
+
+      for (let i = 1; i <= size; i++) {
+        const val = document.getElementById(`member_${i}`)?.value || '';
+        members.push(val);
+      }
+
+      summaryBox.innerHTML = `
+        <div><strong>Tým:</strong> ${team}</div>
+        <div><strong>Počet členů:</strong> ${size}</div>
+        <div><strong>Zaměření:</strong> ${focus}</div>
+        <div><strong>Kapitán:</strong> ${members[captain - 1] || `Člen ${captain}`} (${captainMail})</div>
+        <div><strong>Členové:</strong> ${members.join(', ')}</div>
+      `;
+    }
+
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxv1kido6N8cJRm0OmQu0sCl3IRLUM2T2Y95IYcYnzjKeGse1_yjAjZdtIJFz2cYJAw/exec';
+
+    function collectPayload() {
+      const teamName = document.getElementById('teamName').value.trim();
+      const teamSizeValue = Number(teamSize.value || 0);
+      const teamFocusValue = document.getElementById('teamFocus').value || '';
+      const captainIdx = Number(captainIndex.value || 1);
+      const captainEmail = document.getElementById('captainEmail').value.trim();
+
+      const members = [];
+      for (let i = 1; i <= teamSizeValue; i++) {
+        members.push((document.getElementById(`member_${i}`)?.value || '').trim());
+      }
+
+      return {
+        teamName,
+        teamSize: teamSizeValue,
+        teamFocus: teamFocusValue,
+        captainName: members[captainIdx - 1] || '',
+        captainEmail,
+        members,
+      };
+    }
+
+    async function submitRegistration() {
+      const payload = collectPayload();
+
+      // Google Apps Script Web App + browser CORS:
+      // sending JSON with custom headers triggers preflight and often fails.
+      // We send URL-encoded data in no-cors mode so request is delivered.
+      const body = new URLSearchParams({
+        teamName: payload.teamName,
+        teamSize: String(payload.teamSize),
+        teamFocus: payload.teamFocus,
+        captainName: payload.captainName,
+        captainEmail: payload.captainEmail,
+        members: JSON.stringify(payload.members),
+      });
+
+      await fetch(WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body,
+      });
+
+      // In no-cors mode the response is opaque, so we can't read status/body.
+      // If fetch resolves, assume delivered.
+      return true;
+    }
+
+    teamSize.addEventListener('change', buildMembers);
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) setStep(currentStep - 1);
+    });
+
+    nextBtn.addEventListener('click', async () => {
+      if (!validateStep(currentStep)) {
+        showValidation(currentStep);
+        return;
+      }
+
+      if (currentStep === 1) {
+        buildMembers();
+      }
+
+      if (currentStep === 2) {
+        buildSummary();
+      }
+
+      if (currentStep < 3) {
+        setStep(currentStep + 1);
+      } else {
+        form.style.display = 'none';
+        actionsRow.style.display = 'none';
+        loadingState.classList.add('active');
+        nextBtn.disabled = true;
+        prevBtn.disabled = true;
+
+        try {
+          await submitRegistration();
+          loadingState.classList.remove('active');
+          successState.classList.add('active');
+          runParticles();
+        } catch (err) {
+          loadingState.classList.remove('active');
+          form.style.display = '';
+          actionsRow.style.display = '';
+          nextBtn.disabled = false;
+          prevBtn.disabled = currentStep === 1;
+          alert(`Registraci se nepodařilo odeslat. ${err.message || ''}`.trim());
+        }
+      }
+    });
+
+    setStep(1);
+
+    function runParticles() {
+      const canvas = document.getElementById('particles');
+      const host = document.getElementById('wizard');
+      const rect = host.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      const ctx = canvas.getContext('2d');
+
+      const particles = Array.from({ length: 90 }, () => ({
+        x: Math.random() * canvas.width,
+        y: canvas.height * 0.42 + Math.random() * 25,
+        vx: (Math.random() - .5) * 3,
+        vy: - (Math.random() * 4 + 1.4),
+        r: Math.random() * 3 + 1.2,
+        life: Math.random() * 50 + 45,
+        color: Math.random() > .5 ? '#DD4300' : '#120A05'
+      }));
+
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          if (p.life <= 0) return;
+          p.life -= 1;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.06;
+          ctx.globalAlpha = Math.max(0, p.life / 90);
+          ctx.beginPath();
+          ctx.fillStyle = p.color;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+
+        if (particles.some(p => p.life > 0)) {
+          requestAnimationFrame(tick);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+
+      tick();
+    }
+  </script>
+</body>
+</html>
