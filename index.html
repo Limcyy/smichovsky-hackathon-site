@@ -401,6 +401,7 @@
     .why-item h4 {
       margin: .35rem 0 .35rem;
       font-size: 1rem;
+      font-family: "Space Grotesk", sans-serif;
     }
 
     .why-item p {
@@ -585,46 +586,65 @@
     .partners-section .container { position: relative; z-index: 1; }
     .partners-section .heading p { color: #f0d7c7; }
 
-    .partners-wrap {
-      border: 1px solid rgba(255,255,255,.16);
-      border-radius: var(--radius-lg);
-      background: rgba(255,255,255,.06);
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(0,0,0,.2);
+    .partners-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
     }
 
-    .partners-track {
+    .partner-logo {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.2rem;
       display: flex;
-      gap: .7rem;
-      width: max-content;
-      padding: .9rem;
-      animation: partner-scroll 24s linear infinite;
-    }
-
-    .partner-pill {
-      border: 1px solid rgba(255,255,255,.2);
-      background: rgba(255,255,255,.08);
-      color: #fff;
-      border-radius: 999px;
-      padding: .58rem .95rem;
-      font-size: .88rem;
-      font-weight: 700;
-      white-space: nowrap;
-      display: inline-flex;
       align-items: center;
-      gap: .45rem;
+      justify-content: center;
+      min-height: 100px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
     }
 
-    .partner-pill svg {
-      width: 14px;
-      height: 14px;
-      color: #ffb189;
-      stroke-width: 2.2;
+    .partner-logo.mobile-dup {
+      display: none;
     }
 
-    @keyframes partner-scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-33.33%); }
+    .partner-logo img {
+      max-width: 100%;
+      max-height: 70px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 900px) {
+      .partners-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .partners-grid {
+        display: flex;
+        gap: .8rem;
+        overflow-x: hidden;
+        width: max-content;
+        animation: partners-slide 15s linear infinite;
+      }
+      .partner-logo {
+        padding: .9rem 1.2rem;
+        min-height: 70px;
+        min-width: 140px;
+        flex-shrink: 0;
+        display: flex;
+      }
+      .partner-logo.mobile-dup {
+        display: flex;
+      }
+      .partner-logo img {
+        max-height: 45px;
+      }
+    }
+
+    @keyframes partners-slide {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     .more-info-grid {
@@ -1107,27 +1127,18 @@
           <h2>Partneři & komunita</h2>
           <p>Hackathon vzniká ve spolupráci s partnery z maker, vzdělávací a hardware komunity. Reálná podpora, ne jen logo na plakátu.</p>
         </div>
-        <div class="partners-wrap">
-          <div class="partners-track">
-            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
-            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
-            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
-            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
-            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
-            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
-            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
-            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
-            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
-            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
-            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
-            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
-            <span class="partner-pill"><i data-lucide="building-2"></i> NextZone</span>
-            <span class="partner-pill"><i data-lucide="wrench"></i> Maker komunita</span>
-            <span class="partner-pill"><i data-lucide="cpu"></i> Hardware partneři</span>
-            <span class="partner-pill"><i data-lucide="graduation-cap"></i> Studentské týmy</span>
-            <span class="partner-pill"><i data-lucide="lightbulb"></i> Mentorský pool</span>
-            <span class="partner-pill"><i data-lucide="radio"></i> Mediální podpora</span>
-          </div>
+        <div class="partners-grid">
+          <div class="partner-logo"><img src="./assets/image 82.png" alt="Prusa Research" /></div>
+          <div class="partner-logo"><img src="./assets/image 81.png" alt="Maker Faire" /></div>
+          <div class="partner-logo"><img src="./assets/image 79.png" alt="Smíchovská SPŠ" /></div>
+          <div class="partner-logo"><img src="./assets/image 80.png" alt="ESERO Czech Republic" /></div>
+          <div class="partner-logo"><img src="./assets/Mask group.png" alt="IOCB TEC-H Nadační fond" /></div>
+          <!-- Duplicates for mobile scroll -->
+          <div class="partner-logo mobile-dup"><img src="./assets/image 82.png" alt="Prusa Research" /></div>
+          <div class="partner-logo mobile-dup"><img src="./assets/image 81.png" alt="Maker Faire" /></div>
+          <div class="partner-logo mobile-dup"><img src="./assets/image 79.png" alt="Smíchovská SPŠ" /></div>
+          <div class="partner-logo mobile-dup"><img src="./assets/image 80.png" alt="ESERO Czech Republic" /></div>
+          <div class="partner-logo mobile-dup"><img src="./assets/Mask group.png" alt="IOCB TEC-H Nadační fond" /></div>
         </div>
       </div>
     </section>
@@ -1184,7 +1195,7 @@
         <div class="why-layout">
           <article class="why-main">
             <span class="icon-badge"><i data-lucide="trending-up"></i></span>
-            <h3 style="font-family:Fraunces,serif;font-size:1.7rem;line-height:1.05;">24 hodin, reálná zkušenost propojená s praxí</h3>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.7rem;line-height:1.05;">24 hodin, reálná zkušenost propojená s praxí</h3>
             <p>Hackathon nabízí studentům jedinečnou příležitost získat praktické zkušenosti s vývojem technického projektu v reálném čase a týmovém prostředí.</p>
             <p>Během intenzivních 24 hodin si osvojí dovednosti, které běžná výuka jen obtížně nahrazuje.</p>
           </article>
