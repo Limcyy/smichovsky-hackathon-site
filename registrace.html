@@ -369,6 +369,26 @@
 
     .success p { margin: 0; color: #533d30; line-height: 1.6; }
 
+    .error-state {
+      display: none;
+      text-align: center;
+      border: 1px solid #e4b5b5;
+      border-radius: 18px;
+      background: #fff;
+      padding: 1.4rem;
+    }
+
+    .error-state.active { display: block; }
+
+    .error-state h3 {
+      margin: 0 0 .5rem;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.7rem;
+      color: #c0392b;
+    }
+
+    .error-state p { margin: 0 0 1rem; color: #533d30; line-height: 1.6; }
+
     .loading {
       display: none;
       border: 1px solid var(--line);
@@ -548,6 +568,12 @@
         <h3>Registrace přijata 🎉</h3>
         <p>Díky! Vaše registrace byla přijata a čeká na schválení pořadatelem. Jakmile ji schválíme, pošleme potvrzení na e-mail kapitána. Schválení může trvat několik dní.</p>
       </div>
+
+      <div class="error-state" id="errorState">
+        <h3>Něco se pokazilo 😕</h3>
+        <p id="errorMessage">Registraci se nepodařilo odeslat. Zkuste to prosím znovu.</p>
+        <button type="button" class="btn btn-primary" id="retryBtn">Zkusit znovu</button>
+      </div>
     </section>
   </main>
 
@@ -563,6 +589,9 @@
     const summaryBox = document.getElementById('summaryBox');
     const successState = document.getElementById('successState');
     const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const errorMessage = document.getElementById('errorMessage');
+    const retryBtn = document.getElementById('retryBtn');
     const actionsRow = document.getElementById('actionsRow');
     const teamSize = document.getElementById('teamSize');
     const techOtherWrap = document.getElementById('techOtherWrap');
@@ -766,9 +795,6 @@
     async function submitRegistration() {
       const payload = collectPayload();
 
-      // Google Apps Script Web App + browser CORS:
-      // sending JSON with custom headers triggers preflight and often fails.
-      // We send URL-encoded data in no-cors mode so request is delivered.
       const body = new URLSearchParams({
         teamName: payload.teamName,
         teamSize: String(payload.teamSize),
@@ -782,14 +808,20 @@
         membersDetailed: JSON.stringify(payload.membersDetailed),
       });
 
-      await fetch(WEB_APP_URL, {
+      // Google Apps Script requires redirect follow
+      const response = await fetch(WEB_APP_URL, {
         method: 'POST',
-        mode: 'no-cors',
+        redirect: 'follow',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         body,
       });
 
-      // In no-cors mode the response is opaque, so we can't read status/body.
-      // If fetch resolves, assume delivered.
+      if (!response.ok) {
+        throw new Error(`Server vrátil chybu ${response.status}`);
+      }
+
       return true;
     }
 
@@ -844,13 +876,18 @@
           runParticles();
         } catch (err) {
           loadingState.classList.remove('active');
-          form.style.display = '';
-          actionsRow.style.display = '';
-          nextBtn.disabled = false;
-          prevBtn.disabled = currentStep === 1;
-          alert(`Registraci se nepodařilo odeslat. ${err.message || ''}`.trim());
+          errorMessage.textContent = `Registraci se nepodařilo odeslat. ${err.message || 'Zkontrolujte připojení k internetu.'}`;
+          errorState.classList.add('active');
         }
       }
+    });
+
+    retryBtn.addEventListener('click', () => {
+      errorState.classList.remove('active');
+      form.style.display = '';
+      actionsRow.style.display = '';
+      nextBtn.disabled = false;
+      prevBtn.disabled = currentStep === 1;
     });
 
     setStep(1);
