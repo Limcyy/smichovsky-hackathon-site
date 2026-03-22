@@ -4,6 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrace týmu — Studentský Hardware Hackathon</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Zaregistruj svůj tým na Studentský Hardware Hackathon v Praze. 24 hodin, 3D tisk, robotika — přihlas se ještě dnes." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Studentský Hardware Hackathon" />
+  <link rel="canonical" href="https://hwhackathon.cz/registrace.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hwhackathon.cz/registrace.html" />
+  <meta property="og:title" content="Registrace týmu — Studentský Hardware Hackathon" />
+  <meta property="og:description" content="Zaregistruj svůj tým na Studentský Hardware Hackathon v Praze. 24 hodin, 3D tisk a robotika." />
+  <meta property="og:locale" content="cs_CZ" />
+  <meta property="og:site_name" content="HW Hackathon" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Registrace týmu — Studentský Hardware Hackathon" />
+  <meta name="twitter:description" content="Zaregistruj svůj tým na Studentský Hardware Hackathon v Praze. 24 hodin, 3D tisk a robotika." />
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HL69PGJLQ8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HL69PGJLQ8');
+</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -468,16 +496,17 @@
 
         <div class="step" data-step="3">
           <h2>Technické nároky + shrnutí</h2>
-          <p style="margin:.35rem 0 .85rem;color:#4b372b;"><strong style="color:#120A05;">TOTO JE ZÁVAZNÁ REGISTRACE.</strong> Po odeslání registrace proběhne ruční schválení pořadatelem. Až po schválení obdržíte potvrzovací e-mail s dalšími informacemi na e-mail kapitána.</p>
           <div class="field-grid" style="margin-bottom:.8rem;">
             <div class="field full">
               <label>Technické nároky</label>
               <div style="display:grid;gap:.5rem;">
-                <label><input type="radio" name="techNeed" value="own_ntb" style="width:auto;margin-right:.45rem;" required> Mám svůj NTB, který si přinesu</label>
-                <label><input type="radio" name="techNeed" value="need_ntb" style="width:auto;margin-right:.45rem;"> Potřebuji zajistit NTB od organizátorů</label>
+                <label><input type="radio" name="techNeed" value="own_ntb" style="width:auto;margin-right:.45rem;" required> Máme svůje NTB, který si přineseme</label>
+                <label><input type="radio" name="techNeed" value="need_ntb" style="width:auto;margin-right:.45rem;"> Potřebujeme zajistit NTB od organizátorů</label>
                 <label><input type="radio" name="techNeed" value="other" style="width:auto;margin-right:.45rem;"> Jiné</label>
               </div>
             </div>
+            <p style="margin:.35rem 0 .85rem;color:#4b372b;"><strong style="color:#120A05;">TOTO JE ZÁVAZNÁ REGISTRACE.</strong> Po odeslání registrace proběhne ruční schválení pořadatelem. Až po schválení obdržíte potvrzovací e-mail s dalšími informacemi na e-mail kapitána.</p>
+
             <div class="field full" id="techOtherWrap" style="display:none;">
               <label for="techOther">Upřesnění (jiné)</label>
               <input id="techOther" name="techOther" type="text" placeholder="Napiš prosím technické požadavky" />
