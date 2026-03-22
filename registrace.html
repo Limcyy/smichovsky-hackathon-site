@@ -441,14 +441,14 @@
 
   <main class="container">
     <section class="hero">
-      <h1>Přihlášení týmu na Studentský Hardware Hackathon</h1>
-      <p>Krátký registrační flow na 3 kroky. Vyplň název týmu, členy a potvrď kontaktní údaje kapitána.</p>
+      <h1>Přihlášení týmu na Smíchovský Hardware Hackathon</h1>
+      <p>Krátký registrační flow na 4 kroky. Vyplň název týmu, členy, technické nároky a potvrď údaje.</p>
     </section>
 
     <section class="wizard" id="wizard">
       <canvas id="particles"></canvas>
       <div class="progress-wrap">
-        <div class="step-label" id="stepLabel">Krok 1 ze 3 · Tým</div>
+        <div class="step-label" id="stepLabel">Krok 1 ze 4 · Tým</div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       </div>
 
@@ -495,24 +495,36 @@
         </div>
 
         <div class="step" data-step="3">
-          <h2>Technické nároky + shrnutí</h2>
-          <div class="field-grid" style="margin-bottom:.8rem;">
+          <h2>Technické nároky</h2>
+          <div class="field-grid">
             <div class="field full">
-              <label>Technické nároky</label>
+              <label>Notebook</label>
               <div style="display:grid;gap:.5rem;">
                 <label><input type="radio" name="techNeed" value="own_ntb" style="width:auto;margin-right:.45rem;" required> Máme svůje NTB, který si přineseme</label>
                 <label><input type="radio" name="techNeed" value="need_ntb" style="width:auto;margin-right:.45rem;"> Potřebujeme zajistit NTB od organizátorů</label>
                 <label><input type="radio" name="techNeed" value="other" style="width:auto;margin-right:.45rem;"> Jiné</label>
               </div>
             </div>
-            <p style="margin:.35rem 0 .85rem;color:#4b372b;"><strong style="color:#120A05;">TOTO JE ZÁVAZNÁ REGISTRACE.</strong> Po odeslání registrace proběhne ruční schválení pořadatelem. Až po schválení obdržíte potvrzovací e-mail s dalšími informacemi na e-mail kapitána.</p>
-
+            <div class="field" id="ntbCountWrap" style="display:none;">
+              <label for="ntbCount">Kolik notebooků potřebujete?</label>
+              <select id="ntbCount" name="ntbCount">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
             <div class="field full" id="techOtherWrap" style="display:none;">
               <label for="techOther">Upřesnění (jiné)</label>
               <input id="techOther" name="techOther" type="text" placeholder="Napiš prosím technické požadavky" />
             </div>
           </div>
+        </div>
 
+        <div class="step" data-step="4">
+          <h2>Shrnutí a potvrzení</h2>
+          <p style="margin:.35rem 0 .85rem;color:#4b372b;"><strong style="color:#120A05;">TOTO JE ZÁVAZNÁ REGISTRACE.</strong> Po odeslání registrace proběhne ruční schválení pořadatelem. Až po schválení obdržíte potvrzovací e-mail s dalšími informacemi na e-mail kapitána.</p>
           <div class="summary" id="summaryBox"></div>
           <div class="field" style="margin-top:.8rem;">
             <label><input type="checkbox" id="consent" required style="width:auto;margin-right:.4rem;"> Potvrzuji správnost údajů a odeslání závazné REGISTRACE.</label>
@@ -558,18 +570,19 @@
     let currentStep = 1;
 
     const stepTitles = {
-      1: 'Krok 1 ze 3 · Tým',
-      2: 'Krok 2 ze 3 · Členové + kapitán',
-      3: 'Krok 3 ze 3 · Technické nároky + shrnutí'
+      1: 'Krok 1 ze 4 · Tým',
+      2: 'Krok 2 ze 4 · Členové + kapitán',
+      3: 'Krok 3 ze 4 · Technické nároky',
+      4: 'Krok 4 ze 4 · Shrnutí'
     };
 
     function setStep(step) {
       currentStep = step;
       steps.forEach(el => el.classList.toggle('active', Number(el.dataset.step) === step));
       stepLabel.textContent = stepTitles[step];
-      progressFill.style.width = `${(step / 3) * 100}%`;
+      progressFill.style.width = `${(step / 4) * 100}%`;
       prevBtn.disabled = step === 1;
-      nextBtn.textContent = step === 3 ? 'Odeslat registraci ✓' : 'Pokračovat →';
+      nextBtn.textContent = step === 4 ? 'Odeslat registraci ✓' : 'Pokračovat →';
     }
 
     function buildMembers() {
@@ -634,6 +647,10 @@
           if (!other.value.trim()) return false;
         }
 
+        return true;
+      }
+
+      if (step === 4) {
         return document.getElementById('consent').checked;
       }
 
@@ -663,7 +680,7 @@
           document.getElementById('techOther').reportValidity();
           return;
         }
-
+      } else if (step === 4) {
         if (!document.getElementById('consent').checked) {
           alert('Prosím potvrď souhlas před odesláním.');
         }
@@ -678,12 +695,16 @@
       const captainPhone = document.getElementById('captainPhone').value;
       const techNeed = document.querySelector('input[name="techNeed"]:checked')?.value || '';
       const techOther = document.getElementById('techOther').value.trim();
+      const ntbCount = document.getElementById('ntbCount').value;
 
-      const techMap = {
-        own_ntb: 'Mám svůj NTB, který si přinesu',
-        need_ntb: 'Potřebuji zajistit NTB od organizátorů',
-        other: `Jiné${techOther ? `: ${techOther}` : ''}`
-      };
+      let techText = '';
+      if (techNeed === 'own_ntb') {
+        techText = 'Mám svůj NTB, který si přinesu';
+      } else if (techNeed === 'need_ntb') {
+        techText = `Potřebuji ${ntbCount} NTB od organizátorů`;
+      } else if (techNeed === 'other') {
+        techText = `Jiné${techOther ? `: ${techOther}` : ''}`;
+      }
 
       const members = [];
       for (let i = 1; i <= size; i++) {
@@ -698,7 +719,7 @@
         <div><strong>Počet členů:</strong> ${size}</div>
         <div><strong>Kapitán:</strong> ${members[captain - 1] || `Člen ${captain}`}</div>
         <div><strong>Kontakt kapitána:</strong> ${captainMail} · ${captainPhone}</div>
-        <div><strong>Technické nároky:</strong> ${techMap[techNeed] || 'Neuvedeno'}</div>
+        <div><strong>Technické nároky:</strong> ${techText || 'Neuvedeno'}</div>
         <div><strong>Členové:</strong> ${members.join(', ')}</div>
       `;
     }
@@ -713,6 +734,7 @@
       const captainPhone = document.getElementById('captainPhone').value.trim();
       const techNeed = document.querySelector('input[name="techNeed"]:checked')?.value || '';
       const techOther = document.getElementById('techOther').value.trim();
+      const ntbCount = document.getElementById('ntbCount').value;
 
       const members = [];
       for (let i = 1; i <= teamSizeValue; i++) {
@@ -735,6 +757,7 @@
         captainPhone,
         technicalNeed: techNeed,
         technicalOther: techOther,
+        ntbCount: techNeed === 'need_ntb' ? ntbCount : '',
         members: memberLabels,
         membersDetailed: members,
       };
@@ -754,6 +777,7 @@
         captainPhone: "'" + payload.captainPhone,
         technicalNeed: payload.technicalNeed,
         technicalOther: payload.technicalOther,
+        ntbCount: payload.ntbCount,
         members: JSON.stringify(payload.members),
         membersDetailed: JSON.stringify(payload.membersDetailed),
       });
@@ -771,10 +795,17 @@
 
     teamSize.addEventListener('change', buildMembers);
 
+    const ntbCountWrap = document.getElementById('ntbCountWrap');
+
     document.querySelectorAll('input[name="techNeed"]').forEach(r => {
       r.addEventListener('change', () => {
-        const isOther = document.querySelector('input[name="techNeed"]:checked')?.value === 'other';
+        const selected = document.querySelector('input[name="techNeed"]:checked')?.value;
+        const isOther = selected === 'other';
+        const isNeedNtb = selected === 'need_ntb';
+
         techOtherWrap.style.display = isOther ? '' : 'none';
+        ntbCountWrap.style.display = isNeedNtb ? '' : 'none';
+
         if (!isOther) document.getElementById('techOther').value = '';
       });
     });
@@ -793,11 +824,11 @@
         buildMembers();
       }
 
-      if (currentStep === 2) {
+      if (currentStep === 3) {
         buildSummary();
       }
 
-      if (currentStep < 3) {
+      if (currentStep < 4) {
         setStep(currentStep + 1);
       } else {
         form.style.display = 'none';
