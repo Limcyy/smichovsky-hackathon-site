@@ -481,6 +481,10 @@
               <label for="teamName">Název týmu</label>
               <input id="teamName" name="teamName" type="text" placeholder="Např. RoboMinds" required minlength="2" />
             </div>
+            <div class="field full">
+              <label for="schoolName">Jméno školy</label>
+              <input id="schoolName" name="schoolName" type="text" placeholder="Např. Smíchovská SPŠ a VOŠ" required minlength="2" />
+            </div>
             <div class="field">
               <label for="teamSize">Počet lidí v týmu</label>
               <select id="teamSize" name="teamSize" required>
@@ -655,7 +659,9 @@
 
     function validateStep(step) {
       if (step === 1) {
-        return document.getElementById('teamName').checkValidity() && teamSize.checkValidity();
+        return document.getElementById('teamName').checkValidity()
+          && document.getElementById('schoolName').checkValidity()
+          && teamSize.checkValidity();
       }
 
       if (step === 2) {
@@ -690,6 +696,7 @@
     function showValidation(step) {
       if (step === 1) {
         document.getElementById('teamName').reportValidity();
+        document.getElementById('schoolName').reportValidity();
         teamSize.reportValidity();
       } else if (step === 2) {
         const fields = [
@@ -719,6 +726,7 @@
 
     function buildSummary() {
       const team = document.getElementById('teamName').value;
+      const school = document.getElementById('schoolName').value;
       const size = Number(teamSize.value || 0);
       const captain = Number(captainIndex.value || 1);
       const captainMail = document.getElementById('captainEmail').value;
@@ -746,6 +754,7 @@
 
       summaryBox.innerHTML = `
         <div><strong>Tým:</strong> ${team}</div>
+        <div><strong>Škola:</strong> ${school}</div>
         <div><strong>Počet členů:</strong> ${size}</div>
         <div><strong>Kapitán:</strong> ${members[captain - 1] || `Člen ${captain}`}</div>
         <div><strong>Kontakt kapitána:</strong> ${captainMail} · ${captainPhone}</div>
@@ -758,6 +767,7 @@
 
     function collectPayload() {
       const teamName = document.getElementById('teamName').value.trim();
+      const schoolName = document.getElementById('schoolName').value.trim();
       const teamSizeValue = Number(teamSize.value || 0);
       const captainIdx = Number(captainIndex.value || 1);
       const captainEmail = document.getElementById('captainEmail').value.trim();
@@ -781,6 +791,7 @@
 
       return {
         teamName,
+        schoolName,
         teamSize: teamSizeValue,
         captainName: `${captainObj.name || ''} ${captainObj.surname || ''}`.trim(),
         captainEmail,
@@ -798,6 +809,7 @@
 
       const body = new URLSearchParams({
         teamName: payload.teamName,
+        schoolName: payload.schoolName,
         teamSize: String(payload.teamSize),
         captainName: payload.captainName,
         captainEmail: payload.captainEmail,
