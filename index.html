@@ -1023,6 +1023,105 @@
       }
     }
 
+    .countdown-section {
+      padding: 3rem 0 0;
+      border-top: 0;
+    }
+
+    .countdown-card {
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(221,67,0,.26), transparent 42%),
+        radial-gradient(circle at 86% 80%, rgba(255,255,255,.08), transparent 36%),
+        linear-gradient(145deg, #120A05 0%, #1a0f08 55%, #241309 100%);
+      color: #fff;
+      padding: clamp(2rem, 5vw, 3.5rem);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-card::after {
+      content: "";
+      position: absolute;
+      right: 34px;
+      top: 24px;
+      width: 98px;
+      height: 98px;
+      background: linear-gradient(160deg, rgba(221,67,0,.42), rgba(221,67,0,.08));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .countdown-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      margin: 0 0 1.5rem;
+      letter-spacing: -.3px;
+      color: #f3dbcd;
+    }
+
+    .countdown-timer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .countdown-number {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      padding: .4rem .8rem;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .countdown-label {
+      font-size: .85rem;
+      color: #f0d7c7;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .countdown-sep {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--accent);
+      padding-bottom: 1.2rem;
+    }
+
+    .countdown-done {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      .countdown-number { min-width: 60px; padding: .3rem .5rem; }
+      .countdown-timer { gap: .4rem; }
+      .countdown-sep { padding-bottom: .8rem; }
+    }
+
     .final-card {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -1067,11 +1166,39 @@
   <nav>
     <div class="container nav-inner">
       <div class="brand"><span class="dot"></span> Studentský Hardware Hackathon</div>
-      <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
     </div>
   </nav>
 
   <main>
+    <section class="countdown-section">
+      <div class="container">
+        <div class="countdown-card">
+          <h2 class="countdown-title" id="countdownTitle">Hackathon začíná za:</h2>
+          <div class="countdown-timer" id="countdownTimer">
+            <div class="countdown-unit">
+              <span class="countdown-number" id="cdDays">00</span>
+              <span class="countdown-label">dní</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-unit">
+              <span class="countdown-number" id="cdHours">00</span>
+              <span class="countdown-label">hodin</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-unit">
+              <span class="countdown-number" id="cdMinutes">00</span>
+              <span class="countdown-label">minut</span>
+            </div>
+            <span class="countdown-sep">:</span>
+            <div class="countdown-unit">
+              <span class="countdown-number" id="cdSeconds">00</span>
+              <span class="countdown-label">sekund</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="hero">
       <div class="poly top-right"></div>
       <div class="poly top-left soft"></div>
@@ -1080,10 +1207,6 @@
           <span class="eyebrow">24 h · 3D tisk · Praha</span>
           <h1>Studentský Hardware Hackathon 2026</h1>
           <p>Zapoj se s týmem kamarádů do HW hackathonu! Během 24 hodin vytvoř projekt na dané téma s pomocí 3D tisku a vyhraj hodnotné ceny. Nejlepší projekty budou odprezentovány na Maker Faire Prague.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
-          </div>
-
           <div class="meta-row">
             <span class="icon-row"><i data-lucide="map-pin"></i> NextZone, Preslova 72/25</span>
             <span class="icon-row"><i data-lucide="calendar-days"></i> 24.–25. dubna, zahájení v pátek 24. ráno </span>
@@ -1157,31 +1280,21 @@
         <div class="timeline">
           <article class="step">
             <b>ČÁST 1</b>
-            <div class="step-head"><i data-lucide="clipboard-list"></i><h3>Registrace</h3></div>
-            <p>Přihlas svůj tým přes online formulář.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 2</b>
-            <div class="step-head"><i data-lucide="mail-check"></i><h3>Potvrzení registrace + informační e-maily</h3></div>
-            <p>Po registraci obdržíte potvrzení a všechny potřebné informace k účasti.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 3</b>
             <div class="step-head"><i data-lucide="lightbulb"></i><h3>Odhalení tématu a seznámení se</h3></div>
             <p>Týmy se dozví přesné zadání a seznámí se s pravidly.</p>
           </article>
           <article class="step">
-            <b>ČÁST 4</b>
+            <b>ČÁST 2</b>
             <div class="step-head"><i data-lucide="hammer"></i><h3>24 hodin intenzivní práce</h3></div>
             <p>Během 24 hodin budou týmy vyvíjet svůj projekt s využitím 3D tisku.</p>
           </article>
           <article class="step">
-            <b>ČÁST 5</b>
+            <b>ČÁST 3</b>
             <div class="step-head"><i data-lucide="presentation"></i><h3>Prezentace pitch před porotou</h3></div>
             <p>Každý tým představí svůj projekt před odbornou porotou v krátké prezentaci.</p>
           </article>
           <article class="step">
-            <b>ČÁST 6</b>
+            <b>ČÁST 4</b>
             <div class="step-head"><i data-lucide="trophy"></i><h3>Vyhlášení výherců</h3></div>
             <p>Porota oznámí vítěze a předá některé ceny. Hlavní cenu bude předána slavnostně na festivalu Maker Faire Prague.</p>
           </article>
@@ -1216,7 +1329,7 @@
       <div class="container join-grid">
         <div class="heading" style="margin-bottom:1rem;">
           <h2>FAQ</h2>
-          <p>Tohle lidé řeší nejčastěji před přihláškou.</p>
+          <p>Nejčastější dotazy k hackathonu.</p>
         </div>
         <div class="faq-list">
           <details><summary>Můžu dorazit i bez týmu?</summary><p>Ne. Hackathon je i týmové spolupráci. Minimálně musí být v týmu 2 lidé, maximálně 5.</p></details>
@@ -1268,10 +1381,7 @@
         <div class="final-card">
           <div class="final-content">
             <h2>Ready na 24h challenge?</h2>
-            <p>Přihlas se s týmem, pokud chceš během víkendu postavit něco, co stojí za prezentaci i po hackathonu. Tohle je správné místo a příležitost vytvořit něco průkopnického.</p>
-            <div class="hero-actions" style="margin-bottom:0;">
-              <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit se teď</a>
-            </div>
+            <p>Registrace je uzavřena. Uvidíme se na hackathonu! Připravte se na 24 hodin plných kreativity, 3D tisku a týmové spolupráce.</p>
           </div>
           <img src="./assets/last-year-1.png" alt="Minulý ročník" class="final-photo" />
         </div>
@@ -1284,6 +1394,55 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     lucide.createIcons();
+
+    // Countdown timer
+    (function() {
+      const hackathonStart = new Date('2026-04-24T10:00:00+02:00'); // Friday 10:00 CEST
+      const hackathonEnd = new Date('2026-04-25T10:00:00+02:00');   // Saturday 10:00 CEST
+
+      const titleEl = document.getElementById('countdownTitle');
+      const timerEl = document.getElementById('countdownTimer');
+      const daysEl = document.getElementById('cdDays');
+      const hoursEl = document.getElementById('cdHours');
+      const minutesEl = document.getElementById('cdMinutes');
+      const secondsEl = document.getElementById('cdSeconds');
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+
+      function update() {
+        const now = new Date();
+
+        let target, label;
+
+        if (now < hackathonStart) {
+          label = 'Hackathon začíná za:';
+          target = hackathonStart;
+        } else if (now < hackathonEnd) {
+          label = 'Zbývá:';
+          target = hackathonEnd;
+        } else {
+          titleEl.textContent = '';
+          timerEl.innerHTML = '<span class="countdown-done">Hackathon skončil!</span>';
+          return;
+        }
+
+        titleEl.textContent = label;
+
+        const diff = Math.max(0, Math.floor((target - now) / 1000));
+        const days = Math.floor(diff / 86400);
+        const hours = Math.floor((diff % 86400) / 3600);
+        const minutes = Math.floor((diff % 3600) / 60);
+        const seconds = diff % 60;
+
+        daysEl.textContent = pad(days);
+        hoursEl.textContent = pad(hours);
+        minutesEl.textContent = pad(minutes);
+        secondsEl.textContent = pad(seconds);
+      }
+
+      update();
+      setInterval(update, 1000);
+    })();
   </script>
 </body>
 </html>
