@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Studentský Hardware Hackathon — 3D tisk</title>
+  <title>Studentský Hardware Hackathon — historie & 3. ročník</title>
 
   <!-- SEO -->
-  <meta name="description" content="Studentský Hardware Hackathon v Praze — 24 hodin, 3D tisk, robotika a reálné projekty. Přihlas svůj tým a postav něco průkopnického." />
+  <meta name="description" content="Studentský Hardware Hackathon v Praze — historie ročníků, fotky z minulých akcí a kontakt na chystaný 3. ročník." />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Studentský Hardware Hackathon" />
   <link rel="canonical" href="https://hwhackathon.cz/" />
@@ -15,15 +15,15 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://hwhackathon.cz/" />
-  <meta property="og:title" content="Studentský Hardware Hackathon — 3D tisk + robotika" />
-  <meta property="og:description" content="24hodinový hackathon zaměřený na hardware — 3D tisk a robotiku. Přihlas svůj tým a postav něco průkopnického." />
+  <meta property="og:title" content="Studentský Hardware Hackathon — historie & 3. ročník" />
+  <meta property="og:description" content="Po dvou ročnících hackathonu zaměřeného na 3D tisk a robotiku chystáme další. Zůstaňte s námi v kontaktu." />
   <meta property="og:locale" content="cs_CZ" />
   <meta property="og:site_name" content="HW Hackathon" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Studentský Hardware Hackathon — 3D tisk + robotika" />
-  <meta name="twitter:description" content="24hodinový hackathon zaměřený na hardware — 3D tisk a robotiku. Přihlas svůj tým a postav něco průkopnického." />
+  <meta name="twitter:title" content="Studentský Hardware Hackathon — historie & 3. ročník" />
+  <meta name="twitter:description" content="Po dvou ročnících hackathonu zaměřeného na 3D tisk a robotiku chystáme další. Zůstaňte s námi v kontaktu." />
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HL69PGJLQ8"></script>
 <script>
@@ -1059,6 +1059,701 @@
         justify-content: center;
       }
     }
+
+    /* === Post-event hero (background image + contact form) === */
+    .hero-post {
+      position: relative;
+      padding: 0;
+      border-top: 0;
+      min-height: 640px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-post::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-color: #120A05;
+      background-image:
+        linear-gradient(135deg, rgba(18,10,5,.78) 0%, rgba(18,10,5,.55) 45%, rgba(221,67,0,.32) 100%),
+        url('./assets/hero-bg.jpg'),
+        linear-gradient(135deg, #120A05 0%, #1a0f08 55%, #3a1a08 100%);
+      background-size: cover, cover, cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-post::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 20%, rgba(221,67,0,.22), transparent 42%),
+        radial-gradient(circle at 88% 80%, rgba(255,255,255,.08), transparent 38%);
+    }
+
+    .hero-post .container {
+      position: relative;
+      z-index: 1;
+      padding: 5.5rem 0;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 2.4rem;
+      align-items: center;
+    }
+
+    .hero-post-text { color: #fff; }
+
+    .hero-post-text .eyebrow {
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.22);
+      color: #ffe4d7;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-post-text h1 {
+      color: #fff;
+      max-width: 16ch;
+    }
+
+    .hero-post-text > p {
+      color: #f3dbcd;
+      margin: 1rem 0 1.4rem;
+      max-width: 50ch;
+      line-height: 1.62;
+      font-size: clamp(1rem, 1.7vw, 1.12rem);
+    }
+
+    .hero-post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+    }
+
+    .hero-post-meta span {
+      padding: .44rem .78rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: .84rem;
+      backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+    }
+
+    .hero-post-meta svg { width: 14px; height: 14px; color: #ffb893; }
+
+    /* Contact form */
+    .contact-form {
+      background: rgba(255,253,251,.97);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: var(--radius-xl);
+      padding: 1.6rem;
+      box-shadow: 0 24px 60px rgba(18,10,5,.35);
+      position: relative;
+    }
+
+    .contact-form h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.55rem;
+      margin-bottom: .35rem;
+      line-height: 1.15;
+    }
+
+    .contact-form > p {
+      margin: 0 0 1.1rem;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.55;
+    }
+
+    .role-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .35rem;
+      margin-bottom: .9rem;
+      border: 1px solid var(--line);
+      background: #fff8f0;
+      padding: .3rem;
+      border-radius: 14px;
+    }
+
+    .role-toggle input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .role-toggle label {
+      text-align: center;
+      cursor: pointer;
+      padding: .58rem .6rem;
+      border-radius: 10px;
+      font-size: .89rem;
+      font-weight: 700;
+      color: #6f5647;
+      transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .42rem;
+    }
+
+    .role-toggle label i { width: 14px; height: 14px; }
+
+    .role-toggle input:checked + label {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(221,67,0,.22);
+    }
+
+    .role-toggle input:focus-visible + label {
+      outline: 2px solid rgba(221,67,0,.4);
+      outline-offset: 2px;
+    }
+
+    .field { display: grid; gap: .35rem; margin-bottom: .8rem; }
+
+    .field label {
+      font-weight: 700;
+      font-size: .82rem;
+      color: #4f3a2f;
+      letter-spacing: .2px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: .76rem .9rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-family: inherit;
+      font-size: .94rem;
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(221,67,0,.14);
+    }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+
+    .partner-field {
+      display: none;
+    }
+
+    .partner-field.show {
+      display: grid;
+      animation: slideIn .25s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-form .btn-primary {
+      width: 100%;
+      margin-top: .4rem;
+      padding: .85rem 1.22rem;
+    }
+
+    .btn[disabled] {
+      opacity: .85;
+      cursor: not-allowed;
+    }
+
+    .btn.is-loading svg {
+      animation: btn-spin .9s linear infinite;
+    }
+
+    @keyframes btn-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .form-success {
+      text-align: center;
+      padding: .6rem 0;
+    }
+
+    .form-success-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      margin: .2rem auto .8rem;
+    }
+
+    .form-success-icon i { width: 28px; height: 28px; stroke-width: 2.4; }
+
+    .form-success h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: .4rem;
+    }
+
+    .form-success p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: .92rem;
+    }
+
+    .privacy-hint {
+      margin: .7rem 0 0;
+      font-size: .76rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1020px) {
+      .hero-post .container { grid-template-columns: 1fr; gap: 1.8rem; padding: 4rem 0; }
+      .hero-post { min-height: auto; }
+    }
+
+    @media (max-width: 520px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    /* === History (roadmapa ročníků) === */
+    .history-cards {
+      display: grid;
+      gap: 1.1rem;
+    }
+
+    .history-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 1.5rem;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 1rem;
+      box-shadow: 0 14px 30px rgba(18,10,5,.06);
+      align-items: stretch;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .history-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 42px rgba(18,10,5,.09);
+    }
+
+    .history-card.upcoming {
+      background:
+        radial-gradient(circle at 18% 22%, rgba(221,67,0,.26), transparent 42%),
+        linear-gradient(165deg, #120A05 0%, #1a0f08 60%, #241309 100%);
+      color: #fff;
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .history-card.upcoming::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(160deg, rgba(221,67,0,.42), rgba(221,67,0,.08));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .history-photo {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 4/3;
+      background: #f7e3d2;
+      border: 1px solid rgba(18,10,5,.05);
+    }
+
+    .history-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+      display: block;
+    }
+
+    .history-photo:hover img { transform: scale(1.05); }
+
+    .history-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(18,10,5,.6));
+      opacity: 0;
+      transition: opacity .25s ease;
+      pointer-events: none;
+    }
+
+    .history-photo:hover::after { opacity: 1; }
+
+    .history-photo-cta {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(8px);
+      background: rgba(255,255,255,.96);
+      color: var(--text);
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+      opacity: 0;
+      transition: opacity .25s ease, transform .25s ease;
+      box-shadow: 0 8px 18px rgba(18,10,5,.18);
+      pointer-events: none;
+    }
+
+    .history-photo-cta i { width: 14px; height: 14px; color: var(--accent); }
+
+    .history-photo:hover .history-photo-cta {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .history-photo--locked {
+      cursor: default;
+    }
+
+    .history-photo--locked:hover img { transform: none; }
+    .history-photo--locked::after { content: none; }
+
+    .history-photo-placeholder {
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.05);
+      border: 1px dashed rgba(255,255,255,.22);
+      cursor: default;
+    }
+
+    .history-photo-placeholder i {
+      width: 64px;
+      height: 64px;
+      color: #ffb893;
+      stroke-width: 1.6;
+    }
+
+    .history-content {
+      display: grid;
+      align-content: center;
+      gap: .55rem;
+      padding: .2rem .6rem .2rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .history-year-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+      width: fit-content;
+      padding: .35rem .68rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: .76rem;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    .history-card.upcoming .history-year-tag {
+      background: rgba(255,255,255,.14);
+      color: #ffb893;
+    }
+
+    .history-card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      line-height: 1.05;
+      letter-spacing: -.3px;
+    }
+
+    .history-card p {
+      margin: 0;
+      color: #4f3a2f;
+      line-height: 1.6;
+      font-size: .96rem;
+      max-width: 56ch;
+    }
+
+    .history-card.upcoming p { color: #f3dbcd; }
+
+    .history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .42rem;
+      margin-top: .35rem;
+    }
+
+    .history-meta span {
+      padding: .35rem .68rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff8f0;
+      font-size: .8rem;
+      color: #523d30;
+    }
+
+    .history-card.upcoming .history-meta span {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+      color: #ffe4d7;
+    }
+
+    .history-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .65rem;
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: .65rem 1.05rem;
+      font-size: .88rem;
+    }
+
+    .history-card.upcoming .btn-ghost {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      border-color: rgba(255,255,255,.2);
+    }
+
+    @media (max-width: 1020px) {
+      .history-card { grid-template-columns: 1fr; }
+      .history-content { padding: 0 .2rem .4rem; }
+    }
+
+    /* === Logo marquee (rolující pás partnerů u ročníku) === */
+    .history-partners {
+      grid-column: 1 / -1;
+      margin-top: .8rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--line);
+      display: grid;
+      gap: .65rem;
+    }
+
+    .history-partners-label {
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .logo-marquee {
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+
+    .logo-marquee-track {
+      display: flex;
+      width: max-content;
+      gap: .8rem;
+      animation: marquee 32s linear infinite;
+    }
+
+    .logo-marquee:hover .logo-marquee-track {
+      animation-play-state: paused;
+    }
+
+    .logo-marquee-item {
+      flex-shrink: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: .8rem 1.1rem;
+      height: 72px;
+      min-width: 140px;
+      display: grid;
+      place-items: center;
+    }
+
+    .logo-marquee-item img {
+      max-height: 40px;
+      max-width: 140px;
+      object-fit: contain;
+      display: block;
+      filter: grayscale(.15);
+      opacity: .92;
+      transition: opacity .2s ease, filter .2s ease;
+    }
+
+    .logo-marquee-item:hover img {
+      filter: grayscale(0);
+      opacity: 1;
+    }
+
+    .history-card.upcoming .history-partners {
+      border-top-color: rgba(255,255,255,.14);
+    }
+
+    .history-card.upcoming .history-partners-label {
+      color: #ffb893;
+    }
+
+    .history-card.upcoming .logo-marquee-item {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes marquee-reverse {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+
+    .logo-marquee--reverse .logo-marquee-track {
+      animation-name: marquee-reverse;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-marquee-track { animation: none; }
+    }
+
+    /* === Photo overlay (lightbox-ish) === */
+    .photo-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 4, 2, .9);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: none;
+      padding: 5.4rem;
+      overflow-y: auto;
+    }
+
+    .photo-overlay.show {
+      display: block;
+      animation: fadeIn .25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .photo-overlay-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      position: relative;
+      padding-bottom: 2rem;
+    }
+
+    .photo-overlay-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      background: rgba(8,4,2,.85);
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+
+    .photo-overlay-head h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+      line-height: 1.15;
+      padding: 2rem;
+    }
+
+    .photo-overlay-close {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background-color .2s ease, transform .2s ease;
+      flex: 0 0 auto;
+    }
+
+    .photo-overlay-close:hover {
+      background: rgba(255,255,255,.22);
+      transform: scale(1.05);
+    }
+
+    .photo-overlay-close i { width: 22px; height: 22px; stroke-width: 2.2; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .9rem;
+    }
+
+    .photo-grid figure {
+      margin: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #1a0f08;
+      aspect-ratio: 4/3;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform .3s ease;
+    }
+
+    .photo-grid figure:hover img { transform: scale(1.05); }
+
+    .photo-empty {
+      text-align: center;
+      color: #f3dbcd;
+      padding: 3rem 1rem;
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+    }
+
+    @media (max-width: 800px) { .photo-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .photo-grid { grid-template-columns: 1fr; } }
+
+    body.no-scroll { overflow: hidden; }
   </style>
 </head>
 <body>
@@ -1067,143 +1762,157 @@
   <nav>
     <div class="container nav-inner">
       <div class="brand"><span class="dot"></span> Studentský Hardware Hackathon</div>
-      <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
+      <a class="btn btn-primary" href="#kontakt"><i data-lucide="mail"></i>Zůstat v kontaktu</a>
     </div>
   </nav>
 
   <main>
-    <section class="hero">
-      <div class="poly top-right"></div>
-      <div class="poly top-left soft"></div>
-      <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">24 h · 3D tisk · Praha</span>
-          <h1>Studentský Hardware Hackathon 2026</h1>
-          <p>Zapoj se s týmem kamarádů do HW hackathonu! Během 24 hodin vytvoř projekt na dané téma s pomocí 3D tisku a vyhraj hodnotné ceny. Nejlepší projekty budou odprezentovány na Maker Faire Prague.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit tým</a>
+    <section class="hero-post" id="kontakt">
+      <div class="container">
+        <div class="hero-post-text">
+          <span class="eyebrow">HW Hackathon · 2026</span>
+          <h1>Druhý ročník je za námi.</h1>
+          <p>Děkujeme všem účastníkům, partnerům a porotě za skvělý 24 hodin plných 3D tisku, robotiky, vesmíru a chuti něco postavit. Třetí ročník už chystáme. Buďte u toho!</p>
+          <div class="hero-post-meta">
+            <span><i data-lucide="calendar-check"></i> 2 ročníky za sebou</span>
+            <span><i data-lucide="users"></i> Desítky týmů</span>
+            <span><i data-lucide="rocket"></i> 3. ročník už chystáme</span>
           </div>
-
-          <div class="meta-row">
-            <span class="icon-row"><i data-lucide="map-pin"></i> NextZone, Preslova 72/25</span>
-            <span class="icon-row"><i data-lucide="calendar-days"></i> 24.–25. dubna, zahájení v pátek 24. ráno </span>
-            <span class="icon-row"><i data-lucide="users"></i> Týmy až 5 lidí</span>
-            <span class="icon-row"><i data-lucide="mic"></i> 2. ročník</span>
-          </div>
-
         </div>
 
-        <aside class="hero-visual">
-          <img src="./assets/hero-hackathon.png" alt="Týmy pracující na hardware hackathonu" />
+        <aside>
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-fields" id="formFields">
+              <h3>Chcete zůstat v kontaktu?</h3>
+              <p>Nechte nám e-mail a dáme vědět, jakmile spustíme registrace na třetí ročník.</p>
+
+              <div class="role-toggle" role="radiogroup" aria-label="Jste účastník nebo partner?">
+                <input type="radio" name="role" id="roleParticipant" value="participant" checked>
+                <label for="roleParticipant"><i data-lucide="user-round"></i> Účastník</label>
+                <input type="radio" name="role" id="rolePartner" value="partner">
+                <label for="rolePartner"><i data-lucide="handshake"></i> Partner</label>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="firstName">Jméno</label>
+                  <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
+                </div>
+                <div class="field">
+                  <label for="lastName">Příjmení</label>
+                  <input type="text" id="lastName" name="lastName" required autocomplete="family-name">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required autocomplete="email" placeholder="vas@email.cz">
+              </div>
+
+              <div class="field partner-field" id="partnerField">
+                <label for="company">Firma / společnost</label>
+                <input type="text" id="company" name="company" autocomplete="organization" placeholder="Název firmy">
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="send"></i>
+                Zůstat v kontaktu
+              </button>
+              <p class="privacy-hint">Odesláním souhlasíte se zpracováním údajů pouze za účelem informování o dalším ročníku.</p>
+            </div>
+
+            <div class="form-success" id="formSuccess" hidden>
+              <div class="form-success-icon"><i data-lucide="check"></i></div>
+              <h3>Děkujeme!</h3>
+              <p>Ozveme se vám hned, jak budeme mít novinky o třetím ročníku.</p>
+            </div>
+          </form>
         </aside>
       </div>
     </section>
 
-    <section>
-      <div class="poly bottom-right"></div>
-      <div class="container">
-        <div class="heading">
-          <h2>Výhry</h2>
-          <p>Oceněné projekty vybere odborná porota podle kritérií, která budou zveřejněna v den akce.</p>
-        </div>
-        <div class="prizes">
-          <article class="prize-main">
-            <div class="prize-image">
-              <img src="./assets/prusa-printer.jpg" alt="3D tiskárna Prusa MK4S" />
-            </div>
-            <div class="prize-copy">
-              <h3>Hlavní výhra: 3D tiskárna Prusa MK4S</h3>
-              <p>Vítěznému týmu bude slavnostně předána na <strong>festivalu Maker Faire Prague</strong>.</p>
-              <div class="prize-note">Další ceny pro druhé a třetí místo budou oznámeny později.</div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="partners-section">
+    <section id="historie">
+      <div class="poly top-right"></div>
       <div class="poly bottom-left soft"></div>
       <div class="container">
         <div class="heading">
-          <h2>Partneři & komunita</h2>
-          <p>Hackathon vzniká ve spolupráci s partnery z maker, vzdělávací a hardware komunity. Reálná podpora, ne jen logo na plakátu.</p>
+          <h2>Historie ročníků</h2>
+          <p>Co se odehrálo na předchozích ročnících a co chystáme dál.</p>
         </div>
-        <div class="partners-grid">
-          <div class="partner-logo"><img src="./assets/image 82.png" alt="Prusa Research" /></div>
-          <div class="partner-logo"><img src="./assets/image 81.png" alt="Maker Faire" /></div>
-          <div class="partner-logo"><img src="./assets/image 79.png" alt="Smíchovská SPŠ" /></div>
-          <div class="partner-logo"><img src="./assets/image 80.png" alt="ESERO Czech Republic" /></div>
-          <div class="partner-logo"><img src="./assets/Mask group.png" alt="IOCB TEC-H Nadační fond" /></div>
-          <div class="partner-logo"><img src="./assets/hwlab.png" alt="HW Lab" /></div>
-          <!-- Duplicates for mobile scroll -->
-          <div class="partner-logo mobile-dup"><img src="./assets/image 82.png" alt="Prusa Research" /></div>
-          <div class="partner-logo mobile-dup"><img src="./assets/image 81.png" alt="Maker Faire" /></div>
-          <div class="partner-logo mobile-dup"><img src="./assets/image 79.png" alt="Smíchovská SPŠ" /></div>
-          <div class="partner-logo mobile-dup"><img src="./assets/image 80.png" alt="ESERO Czech Republic" /></div>
-          <div class="partner-logo mobile-dup"><img src="./assets/Mask group.png" alt="IOCB TEC-H Nadační fond" /></div>
-          <div class="partner-logo mobile-dup"><img src="./assets/hwlab.png" alt="HW Lab" /></div>
+
+        <div class="history-cards">
+          <article class="history-card">
+            <div class="history-photo history-photo--locked">
+              <img src="./assets/last-year-1.png" alt="Fotka z 1. ročníku hackathonu" />
+            </div>
+            <div class="history-content">
+              <span class="history-year-tag">1. ročník · 2025</span>
+              <h3>Kde to všechno začalo</h3>
+              <p>První pilotní ročník hackathonu se zaměřil na vývoj vzdělávacích pomůcek pro výuku s využitím moderních technologií. Během 24 hodin studenti pracovali s micro:bity, 3D tiskárnami a další elektronikou, přičemž vítězným projektem se stal EDU jeřáb demonstrující principy fyziky.</p>
+              <div class="history-meta">
+                <span>24 hodin</span><span>17 týmů, 65 studentů </span><span>Vzdělávací pomůcka</span>
+              </div>
+            </div>
+            <div class="history-partners" data-year-partners="1"></div>
+          </article>
+
+          <article class="history-card">
+            <div class="history-photo" data-year-photos="2" role="button" tabindex="0" aria-label="Otevřít fotky z 2. ročníku">
+              <img src="./assets/2.rocnik/DSC08862.jpg" alt="Fotka z 2. ročníku hackathonu" />
+              <div class="history-photo-cta"><i data-lucide="image"></i> Zobrazit fotky</div>
+            </div>
+            <div class="history-content">
+              <span class="history-year-tag">2. ročník · 2026</span>
+              <h3>Větší, silnější, intenzivnější</h3>
+              <p>Druhý ročník byl ještě ambicióznější a vznikl ve spolupráci s organizací ESA ESERO. Úkolem studentů bylo navrhnout řešení na téma „Ulehči život astronautovi“, přičemž finální projekty byly následně prezentovány na Maker Faire Prague, kde proběhlo také slavnostní předání hlavní ceny.</p>
+              <div class="history-meta">
+                <span>24.–25. dubna 2026</span><span>18 týmu, 75 studentů</span><span>Vesmír</span>
+              </div>
+              <div class="history-actions">
+                <button type="button" class="btn btn-ghost" data-year-photos="2">
+                  <i data-lucide="image"></i> Zobrazit fotky
+                </button>
+                <a href="https://chiptron.cz/studentsky-hw-hackathon-2026-studenti-za-24-hodin-navrhli-exoskelet-lokalizaci-astronautu-i-vesmirneho-mazlicka/" target="_blank" rel="noopener"><button type="button" class="btn btn-ghost">
+                    <i data-lucide="file"></i> Zobrazit projekty
+                  </button></a>
+              </div>
+            </div>
+            <div class="history-partners" data-year-partners="2"></div>
+          </article>
+
+          <article class="history-card upcoming">
+            <div class="history-photo history-photo-placeholder" aria-hidden="true">
+              <i data-lucide="rocket"></i>
+            </div>
+            <div class="history-content">
+              <span class="history-year-tag">3. ročník · 2027</span>
+              <h3>Chystáme nový ročník</h3>
+              <p>Pracujeme na zadání, partnerech a termínu akce. Pokud chcete být u toho jako účastník nebo partner, nechte nám kontakt na Vás. Dáme vědět, jakmile spustíme registrace.</p>
+              <div class="history-actions">
+                <a href="#kontakt" class="btn btn-primary"><i data-lucide="mail"></i> Zůstat v kontaktu</a>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    
-
-    <section>
-      <div class="container">
-        <div class="heading">
-          <h2>Jak event probíhá</h2>
-          <p>Organizace akce je v rukou studentů.</p>
-        </div>
-        <div class="timeline">
-          <article class="step">
-            <b>ČÁST 1</b>
-            <div class="step-head"><i data-lucide="clipboard-list"></i><h3>Registrace</h3></div>
-            <p>Přihlas svůj tým přes online formulář.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 2</b>
-            <div class="step-head"><i data-lucide="mail-check"></i><h3>Potvrzení registrace + informační e-maily</h3></div>
-            <p>Po registraci obdržíte potvrzení a všechny potřebné informace k účasti.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 3</b>
-            <div class="step-head"><i data-lucide="lightbulb"></i><h3>Odhalení tématu a seznámení se</h3></div>
-            <p>Týmy se dozví přesné zadání a seznámí se s pravidly.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 4</b>
-            <div class="step-head"><i data-lucide="hammer"></i><h3>24 hodin intenzivní práce</h3></div>
-            <p>Během 24 hodin budou týmy vyvíjet svůj projekt s využitím 3D tisku.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 5</b>
-            <div class="step-head"><i data-lucide="presentation"></i><h3>Prezentace pitch před porotou</h3></div>
-            <p>Každý tým představí svůj projekt před odbornou porotou v krátké prezentaci.</p>
-          </article>
-          <article class="step">
-            <b>ČÁST 6</b>
-            <div class="step-head"><i data-lucide="trophy"></i><h3>Vyhlášení výherců</h3></div>
-            <p>Porota oznámí vítěze a předá některé ceny. Hlavní cenu bude předána slavnostně na festivalu Maker Faire Prague.</p>
-          </article>
-        </div>
-      </div>
-    </section>
 
     <section>
       <div class="poly top-left soft"></div>
       <div class="container">
         <div class="heading">
-          <h2>Proč se zapojit</h2>
+          <h2>O čem hackathon je</h2>
         </div>
         <div class="why-layout">
           <article class="why-main">
             <span class="icon-badge"><i data-lucide="trending-up"></i></span>
             <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.7rem;line-height:1.05;">24 hodin, reálná zkušenost propojená s praxí</h3>
-            <p>Hackathon nabízí studentům jedinečnou příležitost získat praktické zkušenosti s vývojem technického projektu v reálném čase a týmovém prostředí.</p>
-            <p>Během intenzivních 24 hodin si osvojí dovednosti, které běžná výuka jen obtížně nahrazuje.</p>
+            <p>Hackathon dává studentům jedinečnou příležitost získat praktické zkušenosti s vývojem technického projektu v reálném čase a v týmovém prostředí.</p>
+            <p>Během intenzivních 24 hodin si osvojují dovednosti, které běžná výuka jen obtížně nahrazuje.</p>
           </article>
           <div class="why-side">
-            <article class="why-item"><span class="icon-row"><i data-lucide="wrench"></i><h4 style="margin:0;">Reálný výstup</h4></span><p>Cílem není teoretický návrh, ale funkční řešení. Studenti odcházejí s konkrétním výsledkem své práce.</p></article>
+            <article class="why-item"><span class="icon-row"><i data-lucide="wrench"></i><h4 style="margin:0;">Reálný výstup</h4></span><p>Cílem není teoretický návrh, ale funkční řešení. Týmy odcházejí s konkrétním výsledkem své práce.</p></article>
             <article class="why-item"><span class="icon-row"><i data-lucide="lightbulb"></i><h4 style="margin:0;">Propojení s výukou</h4></span><p>Studenti aplikují znalosti ze školy v praxi a vidí jejich reálné využití. Získávají tak hlubší porozumění probíraným tématům.</p></article>
             <article class="why-item"><span class="icon-row"><i data-lucide="network"></i><h4 style="margin:0;">Spolupráce a rozvoj dovedností</h4></span><p>Práce v týmu rozvíjí technické i soft skills, včetně komunikace, organizace a prezentace výsledků.</p></article>
           </div>
@@ -1212,27 +1921,10 @@
     </section>
 
     <section>
-      <div class="poly bottom-right soft"></div>
-      <div class="container join-grid">
-        <div class="heading" style="margin-bottom:1rem;">
-          <h2>FAQ</h2>
-          <p>Tohle lidé řeší nejčastěji před přihláškou.</p>
-        </div>
-        <div class="faq-list">
-          <details><summary>Můžu dorazit i bez týmu?</summary><p>Ne. Hackathon je i týmové spolupráci. Minimálně musí být v týmu 2 lidé, maximálně 5.</p></details>
-          <details><summary>Musím být expert na hardware?</summary><p>Ne. Ideální je mix skillů (HW/SW/design/product). Důležitá je schopnost rychle iterovat.</p></details>
-          <details><summary>Co si mám vzít s sebou?</summary><p>Notebook, nabíječku a chuť stavět. Detailní podmínky dostaneš po registraci.</p></details>
-          <details><summary>Je na místě jídlo a pití?</summary><p>Ano, účastníkům budou poskytnuty oběd, večeře a snídaně druhý den. Detailní informace obdržíte před začátkem akce.</p></details>
-          <details><summary>Podle čeho budou projekty hodnoceny?</summary><p>Primárně se hodnotí funkčnost, kvalita realizace a praktický dopad řešení. Přesná pravidla hodnocení budou zveřejněna v den akce.</p></details>
-        </div>
-      </div>
-    </section>
-
-    <section>
       <div class="container">
         <div class="heading">
           <h2>Kontakty</h2>
-          <p>Máte dotazy ohledně hackathonu? Kontaktujte náš tým.</p>
+          <p>Máte dotazy ohledně hackathonu? Kontaktujte nás!</p>
         </div>
         <div class="contact-grid">
           <article class="contact-card">
@@ -1240,24 +1932,11 @@
               <div class="contact-avatar"><i data-lucide="user-round"></i></div>
               <div>
                 <h3 class="contact-name">Alex Naxera</h3>
-                <p class="contact-role">Koordinace účastníků</p>
+                <p class="contact-role">koordinátor projektu</p>
               </div>
             </div>
             <div class="contact-item"><i data-lucide="mail"></i> E-mail: <strong>alex.naxera@ssps.cz</strong></div>
             <div class="contact-item"><i data-lucide="phone"></i> Telefon: <strong>+420 604 393 832</strong></div>
-          </article>
-
-          <article class="contact-card">
-            <div class="contact-head">
-              <div class="contact-avatar"><i data-lucide="handshake"></i></div>
-              <div>
-                <h3 class="contact-name">Bára Pešek</h3>
-                <p class="contact-role">Spolupráce s partnery</p>
-              </div>
-            </div>
-            
-            <div class="contact-item"><i data-lucide="mail"></i> E-mail: <strong>bara@makemore.cz</strong></div>
-            <div class="contact-item"><i data-lucide="phone"></i> Telefon: <strong>+420 771 286 633</strong></div>
           </article>
         </div>
       </div>
@@ -1267,23 +1946,288 @@
       <div class="container">
         <div class="final-card">
           <div class="final-content">
-            <h2>Ready na 24h challenge?</h2>
-            <p>Přihlas se s týmem, pokud chceš během víkendu postavit něco, co stojí za prezentaci i po hackathonu. Tohle je správné místo a příležitost vytvořit něco průkopnického.</p>
+            <h2>Buďte u třetího ročníku</h2>
+            <p>Třetí ročník už chystáme. Pokud chcete být u toho jako účastník nebo partner, nechte nám kontakt. Aktualizujeme vás jakmile spustíme registrace.</p>
             <div class="hero-actions" style="margin-bottom:0;">
-              <a class="btn btn-primary" href="./registrace.html" target="_blank" rel="noopener"><i data-lucide="ticket"></i>Přihlásit se teď</a>
+              <a class="btn btn-primary" href="#kontakt"><i data-lucide="mail"></i>Zůstat v kontaktu</a>
             </div>
           </div>
-          <img src="./assets/last-year-1.png" alt="Minulý ročník" class="final-photo" />
+          <img src="./assets/2.rocnik/IMG_9936.png" alt="Minulý ročník" class="final-photo" />
         </div>
       </div>
     </section>
   </main>
+
+  <div class="photo-overlay" id="photoOverlay" role="dialog" aria-labelledby="photoOverlayTitle" aria-modal="true" aria-hidden="true">
+    <div class="photo-overlay-inner">
+      <div class="photo-overlay-head">
+        <h3 id="photoOverlayTitle">Fotky</h3>
+        <button type="button" class="photo-overlay-close" id="photoOverlayClose" aria-label="Zavřít fotky">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="photo-grid" id="photoOverlayGrid"></div>
+    </div>
+  </div>
 
   <footer>© Studentský Hardware Hackathon · 3D tisk · Praha</footer>
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     lucide.createIcons();
+
+    // Doplňte sem cesty ke skutečným fotkám z jednotlivých ročníků.
+    // Klíč = číslo ročníku, hodnota = pole URL k obrázkům.
+    const yearPhotos = {
+      1: [
+        './assets/last-year-1.png',
+        './assets/last-year-2.png'
+      ],
+      2: [
+        './assets/2.rocnik/galerie/DSC00012.JPG',
+        './assets/2.rocnik/galerie/DSC00014.JPG',
+        './assets/2.rocnik/galerie/DSC00026.JPG',
+        './assets/2.rocnik/galerie/DSC00046.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00047.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00096.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00099.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00107.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00136.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00151.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00152.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00155.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00164.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00179.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00180.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00186.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00192.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC00200.JPG.jpg',
+        './assets/2.rocnik/galerie/DSC08021.jpg',
+        './assets/2.rocnik/galerie/DSC08224.jpg',
+        './assets/2.rocnik/galerie/DSC08301.jpg',
+        './assets/2.rocnik/galerie/DSC08309.jpg',
+        './assets/2.rocnik/galerie/DSC08318.jpg',
+        './assets/2.rocnik/galerie/DSC08347.jpg',
+        './assets/2.rocnik/galerie/DSC08391.jpg',
+        './assets/2.rocnik/galerie/DSC08395.jpg',
+        './assets/2.rocnik/galerie/DSC08435.jpg',
+        './assets/2.rocnik/galerie/DSC08437.jpg',
+        './assets/2.rocnik/galerie/DSC08446.jpg',
+        './assets/2.rocnik/galerie/DSC08470.jpg',
+        './assets/2.rocnik/galerie/DSC08481.jpg',
+        './assets/2.rocnik/galerie/DSC08496.jpg',
+        './assets/2.rocnik/galerie/DSC08514.jpg',
+        './assets/2.rocnik/galerie/DSC08520.jpg',
+        './assets/2.rocnik/galerie/DSC08554.jpg',
+        './assets/2.rocnik/galerie/DSC08561.jpg',
+        './assets/2.rocnik/galerie/DSC08584.jpg',
+        './assets/2.rocnik/galerie/DSC08586.jpg',
+        './assets/2.rocnik/galerie/DSC08590.jpg',
+        './assets/2.rocnik/galerie/DSC08592.jpg',
+        './assets/2.rocnik/galerie/DSC08655.jpg',
+        './assets/2.rocnik/galerie/DSC08680.jpg',
+        './assets/2.rocnik/galerie/DSC08714.jpg',
+        './assets/2.rocnik/galerie/DSC08737.jpg',
+        './assets/2.rocnik/galerie/DSC08752.jpg',
+        './assets/2.rocnik/galerie/DSC08772.jpg',
+        './assets/2.rocnik/galerie/DSC08803.jpg',
+        './assets/2.rocnik/galerie/DSC08813.jpg',
+        './assets/2.rocnik/galerie/DSC08838.jpg',
+        './assets/2.rocnik/galerie/DSC08861.jpg',
+        './assets/2.rocnik/galerie/DSC08865.jpg',
+        './assets/2.rocnik/galerie/DSC08867.jpg',
+        './assets/2.rocnik/galerie/IMG_0021.JPG',
+        './assets/2.rocnik/galerie/IMG_0027.JPG',
+        './assets/2.rocnik/galerie/IMG_0046.JPG',
+        './assets/2.rocnik/galerie/IMG_0050.JPG',
+        './assets/2.rocnik/galerie/IMG_0053.JPG',
+        './assets/2.rocnik/galerie/IMG_0061.JPG',
+        './assets/2.rocnik/galerie/IMG_0223.JPG',
+        './assets/2.rocnik/galerie/IMG_0232.JPG',
+        './assets/2.rocnik/galerie/IMG_0234.JPG',
+        './assets/2.rocnik/galerie/IMG_0237.JPG',
+        './assets/2.rocnik/galerie/IMG_9936.JPG'
+      ]
+    };
+
+    const yearTitles = {
+      1: 'Fotky · 1. ročník (2025)',
+      2: 'Fotky · 2. ročník (2026)'
+    };
+
+    // Partneři jednotlivých ročníků. Doplňte další podle potřeby.
+    // Pokud bude pole prázdné, pás se u daného ročníku nezobrazí.
+    const yearPartners = {
+      1: [
+      { name: 'Prusa Research', logo: './assets/2.rocnik/partneri/image 82.png' },
+        { name: 'Smíchovská SPŠ', logo: './assets/2.rocnik/partneri/image 79.png' },
+        { name: 'HW Lab', logo: './assets/2.rocnik/partneri/hwlab.png' },
+        { name: 'Karmen', logo: './assets/1.rocnik/partneri/karmen.png' },
+        { name: 'NPI', logo: './assets/1.rocnik/partneri/npi.png' },
+        { name: 'Materiály pro 3D', logo: './assets/1.rocnik/partneri/3D.webp' },
+        { name: 'OMG Robotics', logo: './assets/1.rocnik/partneri/omg.png' },
+        { name: 'Solid Vision', logo: './assets/1.rocnik/partneri/solid.webp' }
+
+      ],
+      2: [
+        { name: 'Prusa Research', logo: './assets/2.rocnik/partneri/image 82.png' },
+        { name: 'Maker Faire Prague', logo: './assets/2.rocnik/partneri/image 81.png' },
+        { name: 'Smíchovská SPŠ', logo: './assets/2.rocnik/partneri/image 79.png' },
+        { name: 'ESERO Czech Republic', logo: './assets/2.rocnik/partneri/image 80.png' },
+        { name: 'IOCB TEC-H Nadační fond', logo: './assets/2.rocnik/partneri/Mask group.png' },
+        { name: 'HW Lab', logo: './assets/2.rocnik/partneri/hwlab.png' }
+      ]
+    };
+
+    // === Render rolujícího pásu partnerů u každého ročníku ===
+    function renderYearPartners() {
+      document.querySelectorAll('[data-year-partners]').forEach((el) => {
+        const year = el.getAttribute('data-year-partners');
+        const partners = yearPartners[year] || [];
+        if (partners.length === 0) {
+          el.style.display = 'none';
+          return;
+        }
+        // Duplikujeme pole, aby rolování bylo plynulé (loop -50%).
+        const items = partners.concat(partners).map((p, idx) => {
+          const dup = idx >= partners.length;
+          return `<div class="logo-marquee-item"${dup ? ' aria-hidden="true"' : ''}>
+            <img src="${p.logo}" alt="${dup ? '' : p.name}" loading="lazy">
+          </div>`;
+        }).join('');
+        const reverse = Number(year) % 2 === 0;
+        el.innerHTML = `
+          <span class="history-partners-label">Partneři ${year}. ročníku</span>
+          <div class="logo-marquee${reverse ? ' logo-marquee--reverse' : ''}">
+            <div class="logo-marquee-track">${items}</div>
+          </div>
+        `;
+        // Pokud je log málo, zpomalíme animaci, aby nebyla "zbrklá".
+        const track = el.querySelector('.logo-marquee-track');
+        const speed = Math.max(20, partners.length * 4);
+        track.style.animationDuration = speed + 's';
+      });
+    }
+    renderYearPartners();
+
+    // === Contact form: Účastník / Partner toggle ===
+    const roleParticipant = document.getElementById('roleParticipant');
+    const rolePartner = document.getElementById('rolePartner');
+    const partnerField = document.getElementById('partnerField');
+    const companyInput = document.getElementById('company');
+
+    function updateRole() {
+      const isPartner = rolePartner.checked;
+      partnerField.classList.toggle('show', isPartner);
+      if (companyInput) companyInput.required = isPartner;
+    }
+
+    roleParticipant.addEventListener('change', updateRole);
+    rolePartner.addEventListener('change', updateRole);
+    updateRole();
+
+    // === Contact form: submit ===
+    // Sem vložte URL nasazeného Google Apps Script Web Appu (končí na /exec).
+    // Pokud necháte prázdné, formulář jen ukáže success (vhodné pro lokální vývoj).
+    const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxqlAgdepE2_ICC4QaZ4mnnZs4DKmdogZnvqP2KXU5abVu2GQtEbyPEYyaY6TfemVz_Cw/exec';
+
+    const form = document.getElementById('contactForm');
+    const formFields = document.getElementById('formFields');
+    const formSuccess = document.getElementById('formSuccess');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const originalLabel = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.classList.add('is-loading');
+      submitBtn.innerHTML = '<i data-lucide="loader-2"></i> Odesílám…';
+      lucide.createIcons();
+
+      try {
+        if (SHEETS_ENDPOINT) {
+          const body = new URLSearchParams();
+          body.append('firstName', form.firstName.value.trim());
+          body.append('lastName', form.lastName.value.trim());
+          body.append('email', form.email.value.trim());
+          body.append('role', form.role.value);
+          body.append('company', form.company.value.trim());
+          body.append('source', location.href);
+
+          const res = await fetch(SHEETS_ENDPOINT, {
+            method: 'POST',
+            body
+          });
+          if (!res.ok) throw new Error('Server error ' + res.status);
+        }
+
+        formFields.hidden = true;
+        formSuccess.hidden = false;
+        lucide.createIcons();
+      } catch (err) {
+        console.error(err);
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+        submitBtn.innerHTML = originalLabel;
+        lucide.createIcons();
+        alert('Něco se nepovedlo. Zkuste to prosím znovu nebo nás kontaktujte e-mailem.');
+      }
+    });
+
+    // === Photo overlay ===
+    const overlay = document.getElementById('photoOverlay');
+    const overlayTitle = document.getElementById('photoOverlayTitle');
+    const overlayGrid = document.getElementById('photoOverlayGrid');
+    const overlayClose = document.getElementById('photoOverlayClose');
+
+    function openPhotoOverlay(year) {
+      const photos = yearPhotos[year] || [];
+      overlayTitle.textContent = yearTitles[year] || `Fotky · ${year}. ročník`;
+      if (photos.length === 0) {
+        overlayGrid.innerHTML = '<div class="photo-empty">Fotky doplníme brzy.</div>';
+      } else {
+        overlayGrid.innerHTML = photos
+          .map(src => `<figure><img loading="lazy" src="${src}" alt="Fotka z ${year}. ročníku"></figure>`)
+          .join('');
+      }
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('no-scroll');
+      overlayClose.focus();
+    }
+
+    function closePhotoOverlay() {
+      overlay.classList.remove('show');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('no-scroll');
+    }
+
+    document.querySelectorAll('[data-year-photos]').forEach((el) => {
+      el.addEventListener('click', () => {
+        openPhotoOverlay(el.getAttribute('data-year-photos'));
+      });
+      if (el.hasAttribute('tabindex')) {
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openPhotoOverlay(el.getAttribute('data-year-photos'));
+          }
+        });
+      }
+    });
+
+    overlayClose.addEventListener('click', closePhotoOverlay);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closePhotoOverlay();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('show')) closePhotoOverlay();
+    });
   </script>
 </body>
 </html>
