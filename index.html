@@ -1023,6 +1023,105 @@
       }
     }
 
+    .countdown-section {
+      padding: 3rem 0 0;
+      border-top: 0;
+    }
+
+    .countdown-card {
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 18% 22%, rgba(221,67,0,.26), transparent 42%),
+        radial-gradient(circle at 86% 80%, rgba(255,255,255,.08), transparent 36%),
+        linear-gradient(145deg, #120A05 0%, #1a0f08 55%, #241309 100%);
+      color: #fff;
+      padding: clamp(2rem, 5vw, 3.5rem);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .countdown-card::after {
+      content: "";
+      position: absolute;
+      right: 34px;
+      top: 24px;
+      width: 98px;
+      height: 98px;
+      background: linear-gradient(160deg, rgba(221,67,0,.42), rgba(221,67,0,.08));
+      clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .countdown-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      margin: 0 0 1.5rem;
+      letter-spacing: -.3px;
+      color: #f3dbcd;
+    }
+
+    .countdown-timer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .countdown-number {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      padding: .4rem .8rem;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .countdown-label {
+      font-size: .85rem;
+      color: #f0d7c7;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .countdown-sep {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--accent);
+      padding-bottom: 1.2rem;
+    }
+
+    .countdown-done {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      .countdown-number { min-width: 60px; padding: .3rem .5rem; }
+      .countdown-timer { gap: .4rem; }
+      .countdown-sep { padding-bottom: .8rem; }
+    }
+
     .final-card {
       display: grid;
       grid-template-columns: 1fr auto;
