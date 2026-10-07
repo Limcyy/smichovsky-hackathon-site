@@ -1632,7 +1632,7 @@
     body.no-scroll { overflow: hidden; }
 
     .partners-grid--brno {
-      grid-template-columns: repeat(3, minmax(0, 240px));
+      grid-template-columns: repeat(4, minmax(0, 220px));
       justify-content: center;
     }
 
@@ -1667,6 +1667,23 @@
       max-height: 88px;
       width: auto;
       filter: none;
+    }
+
+    .partner-logo--laskakit {
+      background: #fff;
+      border: 0;
+    }
+
+    .partner-logo--laskakit img {
+      max-height: 52px;
+      width: auto;
+      filter: none;
+    }
+
+    @media (max-width: 900px) {
+      .partners-grid--brno {
+        grid-template-columns: repeat(2, minmax(0, 240px));
+      }
     }
 
     @media (max-width: 600px) {
@@ -1805,6 +1822,11 @@
           <div class="partner-logo partner-logo--espressif">
             <a href="https://www.espressif.com/" target="_blank" rel="noopener" aria-label="Espressif — partner">
               <img src="./assets/3.rocnik/partneri/Espressif_Standard_Logo_EN_Vertical.png" alt="Espressif" />
+            </a>
+          </div>
+          <div class="partner-logo partner-logo--laskakit">
+            <a href="https://www.laskakit.cz/" target="_blank" rel="noopener" aria-label="LaskaKit — partner">
+              <img src="./assets/3.rocnik/partneri/LaskaKit.png" alt="LaskaKit" />
             </a>
           </div>
         </div>
